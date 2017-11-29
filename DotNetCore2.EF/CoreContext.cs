@@ -1,10 +1,9 @@
-﻿using DotNetCore2.Models.Entities;
+﻿using DotNetCore2.Model.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DotNetCore2.EF
 {
@@ -27,14 +26,4 @@ namespace DotNetCore2.EF
             base.OnModelCreating(builder);
         }
     }
-}
-
-public class Subscription
-{
-    public ICollection<license> Licenses { get; set; }
-}
-
-public class license
-{
-    public Guid UserId { get; set; }
 }

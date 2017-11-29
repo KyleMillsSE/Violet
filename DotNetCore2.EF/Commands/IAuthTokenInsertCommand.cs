@@ -1,4 +1,4 @@
-﻿using DotNetCore2.Models.Entities;
+﻿using DotNetCore2.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;

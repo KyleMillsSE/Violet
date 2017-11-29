@@ -14,11 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Queries\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DotNetCore2.Models\DotNetCore2.Models.csproj" />
+    <ProjectReference Include="..\DotNetCore2.Model\DotNetCore2.Model.csproj" />
   </ItemGroup>
 
  

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DotNetCore2.EF.Commands.Core;
+using DotNetCore2.Model.Entities;
 using System.Threading.Tasks;
-using DotNetCore2.Models.Entities;
-using DotNetCore2.EF.Commands.Core;
 
 namespace DotNetCore2.EF.Commands
 {
