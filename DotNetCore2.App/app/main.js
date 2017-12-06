@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import router from './router'
+var Vue = require('vue')
+var App = require('./app.vue')
+var router = require('./router/router')
 
-Vue.config.productionTip = false
+console.log(router)
 
 new Vue({
-  el: '#app',
-  router,
-  template: '<App/>',
-  components: { App }
+    el: '#app',
+    router,
+    render: h => h(App)
 })

@@ -1,23 +1,24 @@
+﻿<style>
+    .red {
+        color: #f00;
+    }
+</style>
+
 <template>
-  <div id="app">
-    <img src="../wwwroot/assets/logo.png">
-    <router-view></router-view>
-  </div>
+    <div>
+        <h1 class="red">{{msg}}</h1>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+    export default {
+        data() {
+            return {
+                msg: 'Hello world!'
+            }
+        }
+    }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
