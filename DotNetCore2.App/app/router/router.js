@@ -9,9 +9,9 @@ const routes = [
 ];
 
 // fix
-const router = new VueRouter({ routes });
+//const router = new VueRouter({ routes });
 
-export { router };
+export default new VueRouter({ routes });
 //const routes = [
 //    { path: '/', component: Hello },
 //    { path: '/join', component: Join },
