@@ -1,31 +1,14 @@
-﻿var Vue = require('vue')
-var VueRouter = require('vue-router')
-var Hello = require('./hello.vue')
+﻿import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Hello from './hello.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-    { path: '/', component: Hello },
+    { path: '/', name: 'Hello', component: Hello },
 ];
 
-// fix
-//const router = new VueRouter({ routes });
 
-export default new VueRouter({ routes });
-//const routes = [
-//    { path: '/', component: Hello },
-//    { path: '/join', component: Join },
-//];
+const router = new VueRouter({ routes });
 
-//// fix
-//const router = new VueRouter({ routes });
-
-//new Router({
-//    routes: [
-//        {
-//            path: '/',
-//            name: 'Hello',
-//            component: Hello
-//        }
-//    ]
-//}) 
+export default router 

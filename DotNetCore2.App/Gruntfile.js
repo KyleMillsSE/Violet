@@ -4,100 +4,19 @@
 //*/
 
 
-//module.exports = function (grunt) {
-
-
-
-//    grunt.loadNpmTasks('grunt-contrib-clean');
-//    grunt.loadNpmTasks('grunt-browserify');
-//    grunt.loadNpmTasks('grunt-vueify');
-
-
-//    grunt.initConfig({
-//        clean: ['wwwroot/dist'],
-//        browserify: {
-//            files: {
-//                dest: 'wwwroot/dist/module.js',
-//                src: [
-//                    'app/**/*.vue',
-//                    'app/**/*.js',
-//                ]
-//            },
-//            options: {
-//                transform: ['vueify']//, , 'babelify'
-//            },
-//        },
-//        vueify: {
-//            components: {
-//                files: [
-//                    {
-//                        expand: true,
-//                        src: 'app/**/*.vue',
-//                        dest: 'dist/',
-//                        ext: '.vue.js'
-//                    }
-//                ]
-//            }
-//        },
-//        sass: {
-//            dist: {
-//                files: {
-//                    'web/assets/css/style.css': 'source/sass/style.scss'
-//                }
-//            }
-//        },
-//        watch: {
-//            app: {
-//                files: ["app/**/*"],
-//                tasks: ["browserify"],
-//                options: {
-//                    spawn: false,
-//                }
-//            },
-//            libs: {
-//                files: ["bower_components/**/*"],
-//                tasks: ["concat"]
-//            },
-//            css: {
-//                files: 'source/sass/*.scss',
-//                tasks: ['sass'],
-//                options: {
-//                    livereload: true,
-//                }
-//            }
-//        },
-//        concat: {
-//            options: {
-//                separator: ';',
-//            },
-//            dist: {
-//                src: [
-//                    'bower_components/jquery/dist/jquery.js',
-//                    'bower_components/uikit/js/uikit.js',
-//                    'bower_components/uikit/js/components/nestable.js',
-//                    'bower_components/humanize-plus/public/src/humanize.js',
-//                    'bower_components/hogan/web/builds/3.0.2/hogan-3.0.2.min.js'
-//                ],
-//                dest: 'web/assets/js/libs.js',
-
-//            }
-//        },
-
-//    });
-
-//    grunt.registerTask('build', ['clean', 'browserify']);
-//};
-
 module.exports = function (grunt) {
 
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-browserify');
-    // grunt.registerTask('default', ['watch']);
 
-    // Project configuration.
     grunt.initConfig({
-        //pkg: grunt.file.readJSON('package.json'),
+        clean: {
+            dist: {
+                src: ['wwwroot/']
+            }
+        },
         browserify: {
             dist: {
                 options: {
@@ -113,23 +32,19 @@ module.exports = function (grunt) {
         },
         watch: {
             app: {
-                files: ["source/js/**/*"],
+                files: ["app/**/*"],
                 tasks: ["browserify"],
                 options: {
                     spawn: false,
                 }
             },
-            libs: {
-                files: ["bower_components/**/*"],
-                tasks: ["concat"]
-            },
-            css: {
-                files: 'source/sass/*.scss',
-                tasks: ['sass'],
-                options: {
-                    livereload: true,
-                }
-            }
+            //css: {
+            //    files: 'source/sass/*.scss',
+            //    tasks: ['sass'],
+            //    options: {
+            //        livereload: true,
+            //    }
+            //}
         },
         concat: {
             options: {
@@ -148,12 +63,16 @@ module.exports = function (grunt) {
         },
     });
 
-    grunt.registerTask('serve', [
+    grunt.registerTask('build', [
+        'clean',
         //'concat',
         'browserify',
         // 'sass',
-        // 'watch'
+        //copy
+        'watch'
     ]);
+
+    grunt.registerTask('default', ['build']);
 
 };
 
