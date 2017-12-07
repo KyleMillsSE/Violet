@@ -101,7 +101,7 @@ module.exports = function (grunt) {
         browserify: {
             dist: {
                 options: {
-                    transform: ['vueify']
+                    transform: ['vueify', 'babelify']
                 },
                 dest: 'wwwroot/dist/module.js',
                 src: [

@@ -1,11 +1,13 @@
 var Vue = require('vue')
 var App = require('./app.vue')
-var router = require('./router/router')
+//var router = require('./router/router')
+import router from './router/router'
 
-console.log(router)
-
-new Vue({
+const vue = new Vue({
     el: '#app',
     router,
     render: h => h(App)
-})
+}).$mount('#app');
+
+
+export { vue }
