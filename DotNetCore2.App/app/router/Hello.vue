@@ -20,14 +20,19 @@
 </template>
 
 <script>
+    import restClient from '../components/restClient.js' 
 
 export default {
+
   name: 'hello',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
-  }
+  },
+  created() {
+      restClient.get('products?id=').then(response => this.product = response.data)
+    }
 }
 </script>
 
