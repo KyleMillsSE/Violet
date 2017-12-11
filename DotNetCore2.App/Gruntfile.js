@@ -10,6 +10,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.initConfig({
         clean: {
@@ -22,7 +23,7 @@ module.exports = function (grunt) {
                 options: {
                     transform: ['vueify', 'babelify']
                 },
-                dest: 'wwwroot/dist/module.js',
+                dest: 'wwwroot/dist/app.js',
                 src: [
                     'app/**/*.js',
                     'app/**/*.vue'
@@ -30,44 +31,43 @@ module.exports = function (grunt) {
                 ]
             }
         },
+        cssmin: {
+            options: {
+                shorthandCompacting: false,
+                roundingPrecision: -1
+            },
+            combine: {
+                files: {
+                    'wwwroot/dist/app.min.css': ['wwwroot/dist/app.css']
+                }
+            }
+        },
         watch: {
             app: {
                 files: ["app/**/*"],
-                tasks: ["browserify"],
+                tasks: ["browserify", "cssmin"],
                 options: {
                     spawn: false,
                 }
             },
-            //css: {
-            //    files: 'source/sass/*.scss',
-            //    tasks: ['sass'],
-            //    options: {
-            //        livereload: true,
-            //    }
-            //}
         },
         concat: {
-            options: {
-                separator: ';',
-            },
-            dist: {
+            css: {
                 src: [
-                    //'bower_components/jquery/dist/jquery.js',
-                    //'bower_components/uikit/js/uikit.js',
-                    //'bower_components/uikit/js/components/nestable.js',
-                    //'bower_components/humanize-plus/public/src/humanize.js',
-                    //'bower_components/hogan/web/builds/3.0.2/hogan-3.0.2.min.js'
+                    'app/css/app.css',
+                    'app/css/app-theme.css',
+                    'app/css/zapp.css'
                 ],
-                dest: 'wwwroot/dist/libs.js',
+                dest: 'wwwroot/dist/app.css',
             },
         },
     });
 
     grunt.registerTask('build', [
         'clean',
-        //'concat',
+        'concat',
         'browserify',
-        // 'sass',
+        'cssmin',
         //copy
         'watch'
     ]);

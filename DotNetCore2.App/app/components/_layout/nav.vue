@@ -20,20 +20,22 @@
 </template>
 
 <script>
-    import restClient from '../components/restClient.js' 
 
-export default {
+    //import restClient from '../components/restClient/restClient.js' 
 
-  name: 'hello',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    export default {
+
+      name: 'hello',
+      data () {
+        return {
+          msg: 'Welcome to Your Vue.js App'
+        }
+      },
+      created() {
+          //restClient.get('products?id=').then(response => this.product = response.data)
+        }
     }
-  },
-  created() {
-      restClient.get('products?id=').then(response => this.product = response.data)
-    }
-}
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

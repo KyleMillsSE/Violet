@@ -33,9 +33,9 @@
     "grunt-browserify": "5.2.0",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-sass": "^1.0.0",
     "grunt-contrib-uglify": "^3.2.1",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-contrib-cssmin": "^2.2.1",
     "vue-template-compiler": "2.4.4",
     "vueify": "9.4.1",
     "axiom": "0.1.6"
