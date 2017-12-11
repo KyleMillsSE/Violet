@@ -11,6 +11,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.initConfig({
         clean: {
@@ -18,6 +19,16 @@ module.exports = function (grunt) {
                 src: ['wwwroot/']
             }
         },
+        //concat: {
+        //    css: {
+        //        src: [
+        //            'app/css/app.css',
+        //            'app/css/app-theme.css',
+        //            'app/css/zapp.css'
+        //        ],
+        //        dest: 'wwwroot/dist/app.css',
+        //    },
+        //},
         browserify: {
             dist: {
                 options: {
@@ -38,9 +49,16 @@ module.exports = function (grunt) {
             },
             combine: {
                 files: {
-                    'wwwroot/dist/app.min.css': ['wwwroot/dist/app.css']
+                    'wwwroot/dist/app.min.css': ['app/css/*.css']// ['wwwroot/dist/app.css']
                 }
             }
+        },
+        copy: {
+            dist: {
+                files: [
+                    { expand: true, flatten: true , src: ['app/assets/favicon.ico'], dest: 'wwwroot/', filter: 'isFile' },
+                ],
+            },
         },
         watch: {
             app: {
@@ -50,25 +68,15 @@ module.exports = function (grunt) {
                     spawn: false,
                 }
             },
-        },
-        concat: {
-            css: {
-                src: [
-                    'app/css/app.css',
-                    'app/css/app-theme.css',
-                    'app/css/zapp.css'
-                ],
-                dest: 'wwwroot/dist/app.css',
-            },
-        },
+        }
     });
 
     grunt.registerTask('build', [
         'clean',
-        'concat',
+        // 'concat',
         'browserify',
         'cssmin',
-        //copy
+        'copy',
         'watch'
     ]);
 

@@ -5,16 +5,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DotNetCore2.WebApi.Configurations
 {
     public static class ServiceConfigurations
     {
-        private const string COMMAND_NAMESPACE = "DotNetCore2.EF.Commands";
+        private const string COMMAND_NAMESPACE = "DotNetCore2.EF";
 
         public static void ConfigureCommandServices(this IServiceCollection services)
         {
