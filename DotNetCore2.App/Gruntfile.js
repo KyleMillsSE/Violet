@@ -56,7 +56,7 @@ module.exports = function (grunt) {
         copy: {
             dist: {
                 files: [
-                    { expand: true, flatten: true , src: ['app/assets/favicon.ico'], dest: 'wwwroot/', filter: 'isFile' },
+                    { expand: true, flatten: true , src: ['app/assets/*'], dest: 'wwwroot/assets/', filter: 'isFile' },
                 ],
             },
         },

@@ -6,20 +6,23 @@
 
 <template>
     <div>
-        <h1 class="red">{{msg}}</h1>
-        <button class="btn btn-danger">WOO</button>
-        <div>
+        <!--<navbar></navbar>
+        <sidebar></sidebar>-->
+
             <router-view></router-view>
-        </div>
+    
     </div>
 </template>
 
 <script>
+    import navbar from './components/_layout/nav.vue'
+    import sidebar from './components/_layout/sidebar.vue'
+
     export default {
-        data() {
-            return {
-                msg: 'Hello world!'
-            }
-        }
+        name: 'app',
+        components: {
+            navbar,
+            sidebar
+        },
     }
 </script>

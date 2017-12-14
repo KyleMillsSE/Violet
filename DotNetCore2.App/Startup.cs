@@ -59,11 +59,11 @@ namespace DotNetCore2
                 app.UseExceptionHandler("/Error");
             }
 
+            //app.UseMvc();
+
             app.UseStaticFiles();
             //enable jwt
             app.UseAuthentication();
-
-            app.UseMvc();
 
             app.UseMvc(routes =>
             {
