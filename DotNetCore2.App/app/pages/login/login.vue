@@ -55,9 +55,9 @@
     }
 
     label {
-        font-weight: 200;
+        font-weight: 100;
         font-size: 16px;
-        color: #f7ba5e;
+        color: #ffffff;
     }
 
     .input-group > .form-control:last-child {

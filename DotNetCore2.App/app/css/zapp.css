@@ -28,20 +28,20 @@ input {
 
 .btn-core {
     color: #fff;
-    background-color: #f39200;
-    border-color: #ffffff;
+    background-color: #f4980e;
+    border-color: #ec930c;
 }
 
     .btn-core:focus,
     .btn-core.focus {
         color: #fff;
-        background-color: #e7ae64;
+        background-color: #f6ab3b;
         border-color: #f39200;
     }
 
     .btn-core:hover {
         color: #fff;
-        background-color: #e7ae64;
+        background-color: #f6ab3b;
         border-color: #f39200;
     }
 
@@ -49,8 +49,8 @@ input {
     .btn-core.active,
     .open > .dropdown-toggle.btn-core {
         color: #fff;
-        background-color: #e7ae64;
-        border-color: #f39200;
+        background-color: #f4980e;
+        border-color: #eea236;
     }
 
         .btn-core:active:hover,
@@ -63,8 +63,8 @@ input {
         .btn-core.active.focus,
         .open > .dropdown-toggle.btn-core.focus {
             color: #fff;
-            background-color: #398439;
-            border-color: #255625;
+            background-color: #f4980e;
+            border-color: #eea236;
         }
 
     .btn-core:active,
