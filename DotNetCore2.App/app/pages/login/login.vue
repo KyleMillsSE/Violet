@@ -6,32 +6,43 @@
                     <img style="padding-top: 30px;" src="/assets/lars-logo.png" alt="Lars logo">
                 </div>
                 <div class="col-md-6">
-                    <div class="input-group">
+                    <div class="input-group pd-sm">
                         <label>
                             Username
                         </label>
-                        <input type="email" class="form-control" />
+                        <input v-model="username" type="text" class="form-control" />
                     </div>
-                    <div class="input-group pt-sm">
+                    <div class="input-group pd-sm">
                         <label>
                             Password
                         </label>
-                        <input type="password" class="form-control" />
+                        <input v-model="password" type="password" class="form-control" />
                     </div>
+                    <button v-on:click="submit()" class="btn btn-core pull-right mr-sm">Sign in</button>
                 </div>
             </div>
-         
         </div>
     </div>
 </template>
 
 <script>
-
+    import restClient from '../../core/restClient/restClient'
 
     export default {
 
-      name: 'login',
-     
+        name: 'login',
+        data() {
+            return {
+                username: '',
+                password: ''
+            }
+        },
+        methods: {
+            submit() {
+                console.log(this.username);
+                console.log(this.password);
+            }
+        }
     }
 
 </script>
@@ -44,12 +55,10 @@
     }
 
     label {
-        font-weight: 100;
-        font-size: 14px;
-        color: #ffffff;
+        font-weight: 200;
+        font-size: 16px;
+        color: #f7ba5e;
     }
-
-
 
     .input-group > .form-control:last-child {
         -webkit-border-radius: 3px !important;
@@ -60,5 +69,4 @@
     input:focus {
         border-color: #e7ae64;
     }
-
 </style>

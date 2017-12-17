@@ -6,23 +6,27 @@
 
 <template>
     <div>
-        <!--<navbar></navbar>
-        <sidebar></sidebar>-->
+        <navbar v-show="displayNav"></navbar>
 
+        
             <router-view></router-view>
     
     </div>
 </template>
 
 <script>
-    import navbar from './components/_layout/nav.vue'
-    import sidebar from './components/_layout/sidebar.vue'
+    import navbar from './pages/_layout/nav.vue'
 
     export default {
         name: 'app',
         components: {
-            navbar,
-            sidebar
+            navbar
+        },
+        computed: {
+            displayNav() {
+                console.log(this.$store.getters.shouldDisplayNav)
+                return this.$store.getters.shouldDisplayNav;
+            }
         },
     }
 </script>

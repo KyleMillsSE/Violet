@@ -29,5 +29,11 @@ restClient.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 
+/**
+* Helper method to set the header with the token
+*/
+restClient.setToken = () => {
+    restClient.defaults.headers.common.Authorization = `Bearer ${token}`
+}
 
 export default restClient 
