@@ -151,11 +151,11 @@ footer {
     left: 0;
     bottom: 0;
     height: 60px;
-    border-top: 1px solid #e4eaec;
+    /*border-top: 1px solid #e4eaec;*/
     padding: 20px;
     z-index: 109;
-    border-top-color: #f0981a;
-    border-top-width: 2px;
+    /*border-top-color: #f0981a;
+    border-top-width: 2px;*/
 }
 
 /*

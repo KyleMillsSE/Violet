@@ -5,14 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DotNetCore2.Controllers.Users
+namespace DotNetCore2.App.Controllers.Account
 {
-    [Route("api/[controller]")]
-    public class UserController : Controller
+    [Route("api/account")]
+    public class AccountController : Controller
     {
         private static UserManager<IdentityUser> _userManager;
 
-        public UserController(UserManager<IdentityUser> userManager)
+        public AccountController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }
@@ -20,20 +20,12 @@ namespace DotNetCore2.Controllers.Users
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody]UserDetails newUser)
         {
-            var user = new IdentityUser(); //{ Email = newUser.Email, UserName = newUser.Email };
+            var user = new IdentityUser() { Email = newUser.Email, UserName = newUser.Username };
 
-            var userCreated = await _userManager.CreateAsync(user);
+            var userCreated = await _userManager.CreateAsync(user, newUser.Password);
 
             if (!userCreated.Succeeded)
             {
-                return BadRequest(GetErrors(userCreated.Errors));
-            }
-
-            var passwordCreated = await _userManager.AddPasswordAsync(user, newUser.Password);
-
-            if (!passwordCreated.Succeeded)
-            {
-                await _userManager.DeleteAsync(user);
                 return BadRequest(GetErrors(userCreated.Errors));
             }
 

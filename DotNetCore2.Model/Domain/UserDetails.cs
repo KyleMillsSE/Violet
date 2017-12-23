@@ -14,5 +14,6 @@ namespace DotNetCore2.Model.Domain
         public string Password { get; set; }
         [Required]
         public string GrantType { get; set; }
+        public string Email { get; set; }
     }
 }

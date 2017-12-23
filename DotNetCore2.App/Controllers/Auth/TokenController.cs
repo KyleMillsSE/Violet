@@ -26,7 +26,6 @@ namespace DotNetCore2.Controllers.Auth
             _settings = settings;
         }
 
-
         [HttpGet()]
         public IActionResult GetToken([FromQuery]UserDetails token)
         {
@@ -49,23 +48,30 @@ namespace DotNetCore2.Controllers.Auth
         /// 
         /// </summary>
         /// <param name="parameters"></param>
-        private async Task<Authentication> Authorize(UserDetails token)
-        { 
-            var identUser = await _userManager.FindByNameAsync(token.Username);
+        private async Task<Authentication> Authorize(UserDetails userDetails)
+        {
+            var identUser = await _userManager.FindByNameAsync(userDetails.Username);
 
-            var isValidated = await _userManager.CheckPasswordAsync(identUser, token.Password);
+            var isValidated = await _userManager.CheckPasswordAsync(identUser, userDetails.Password);
 
             if (!isValidated)
             {
                 throw new ArgumentException("Invalid parameters");
             }
 
-            var refresh_token = Guid.NewGuid().ToString().Replace("-", "");
+            var token = GetToken();
 
-            return GetJwt(null, refresh_token);
+            var authentication = new Authentication()
+            {
+                Username = userDetails.Username,
+                Token = token.value,
+                Expires = token.expiry
+            };
+
+            return authentication;
         }
 
-        private Authentication GetJwt(string client_id, string refresh_token)
+        private (string value, int expiry) GetToken()
         {
             var now = DateTime.UtcNow;
 
@@ -89,13 +95,7 @@ namespace DotNetCore2.Controllers.Auth
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            var auth = new Authentication
-            {
-                Token = encodedJwt,
-                Expires = (int)TimeSpan.FromMinutes(2).TotalSeconds,
-            };
-
-            return auth;
+            return (encodedJwt, (int)TimeSpan.FromMinutes(2).TotalSeconds);
         }
     }
 }

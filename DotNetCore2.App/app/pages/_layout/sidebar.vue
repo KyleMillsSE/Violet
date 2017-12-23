@@ -1,5 +1,5 @@
 ﻿<template>
-    <aside class="main-sidebar" style="padding-top: 75px;">
+    <aside class="main-sidebar" style="padding-top: 80px;">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- Sidebar user panel -->
@@ -14,12 +14,12 @@
             </div>-->
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu" data-widget="tree">
-                <li><a><i class="fa fa-users"></i> <span>Users</span></a></li>
-                <li  class="active"><a><i class="fa fa-question"></i> <span>Nav Item?</span></a></li>
-                <li><a><i class="fa fa-question"></i> <span>Nav Item?</span></a></li>
-                <li><a><i class="fa fa-question"></i> <span>Nav Item?</span></a></li>
-                <li><a><i class="fa fa-question"></i> <span>Nav Item?</span></a></li>
-                <li><a><i class="fa fa-question"></i> <span>Nav Item?</span></a></li>
+                <li v-bind:class="{ active: item.isActive }" v-on:click="selectNavItem(index)" v-for="(item, index) in navItems">
+                    <a>
+                        <i v-bind:class="item.icon"></i> <span>{{item.name}}</span>
+                    </a>
+                </li>
+
             </ul>
         </section>
         <!-- /.sidebar -->
@@ -29,5 +29,30 @@
 <script>
     export default {
         name: 'sidebar',
+        data() {
+            return {
+                navItems: [
+                    { icon: 'fa fa-users', name: 'Users', isActive: false },
+                    { icon: 'fa fa-question', name: 'Nav Item?', isActive: false },
+                    { icon: 'fa fa-question', name: 'Nav Item?', isActive: false },
+                    { icon: 'fa fa-question', name: 'Nav Item?', isActive: false },
+                    { icon: 'fa fa-question', name: 'Nav Item?', isActive: false },
+                    { icon: 'fa fa-question', name: 'Nav Item?', isActive: false },
+                    { icon: 'fa fa-question', name: 'Nav Item?', isActive: false }
+                ],
+                currentSelected: 0
+            }
+        },
+        methods: {
+            selectNavItem(index) {
+                
+                this.navItems[this.currentSelected].isActive = false;
+                this.navItems[index].isActive = true;
+                this.currentSelected = index;
+            }
+        },
+        created() {
+            this.navItems[this.currentSelected].isActive = true;
+        }
     }
 </script>

@@ -35,7 +35,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     nav {
-        height: 75px;
+        height: 80px;
         background-color: #0082c8;
         border-bottom-color: #f0981a;
         border-bottom-width: 3px;
