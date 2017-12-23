@@ -37,14 +37,14 @@ namespace DotNetCore2
 
             services.AddScoped(typeof(IEntityInsertCommand<>), typeof(EntityInsertCommand<>));
 
+            services.AddMvc();
+
             //Configure scoped services
             services.ConfigureCommandServices();
             //Configure identity
             services.ConfigureIdentityService();
             //configure the jwt   
             services.ConfigureJwtAuthService(Configuration);
-
-            services.AddMvc();
 
             services.Configure<Audience>(Configuration.GetSection("Audience"));
         }
@@ -62,12 +62,13 @@ namespace DotNetCore2
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseMvc();
-
-            app.UseStaticFiles();
             //enable jwt
             app.UseAuthentication();
 
+            app.UseMvc();
+
+            app.UseStaticFiles();
+          
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

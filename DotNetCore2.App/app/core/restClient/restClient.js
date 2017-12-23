@@ -10,15 +10,12 @@ const restClient = new axios.create({
 })
 
 restClient.interceptors.request.use(function (config) {
-
     // append auth token to header if exists
     if (!config.headers.Authorization) {
         config.headers.Authorization = 'Bearer ' + store.getters.getToken;
     }
-
     return config;
 }, function (error) {
-    console.log(error);
     // Do something with request error
     return Promise.reject(error);
 });

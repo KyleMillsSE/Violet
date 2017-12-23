@@ -71,7 +71,7 @@ namespace DotNetCore2.Controllers.Auth
 
             var claims = new Claim[]
             {
-               // new Claim(JwtRegisteredClaimNames.Sub, client_id),
+                new Claim(JwtRegisteredClaimNames.Sub, "123123"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64)
             };

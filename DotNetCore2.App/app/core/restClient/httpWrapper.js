@@ -25,7 +25,7 @@ const http = new httpWrapper()
 
 export default {
 
-    get(endpoint, data) {
+    get(endpoint, data = null) {
         return http.submit('get', endpoint, data);
     }
 }

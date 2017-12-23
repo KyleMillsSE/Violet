@@ -5,13 +5,8 @@
         </a>
 
         <div class="collapse navbar-collapse">
-            <ul  class="navbar-nav navbar-items">
-                <li><a><i class="fa fa-home" aria-hidden="true"></i> Dashboard <span class="sr-only">(current)</span></a></li>
-                <li><a><i class="fa" aria-hidden="true"></i> Link 1 <span class="sr-only">(current)</span></a></li>
-                <li><a><i class="fa" aria-hidden="true"></i> Link 2 <span class="sr-only">(current)</span></a></li>
-            </ul>
             <ul class="navbar-nav navbar-items  pull-right">
-                <li>
+                <li v-on:click="signOut()">
                     <a><i style="font-size: 26px;" class="fa fa-sign-out" aria-hidden="true"></i><span class="sr-only">(current)</span></a>
                 </li>
             </ul>
@@ -21,8 +16,19 @@
 </template>
 
 <script>
+    import notification from '../../core/notification/notification'
+
     export default {
-        name: 'nav'
+        name: 'nav',
+        methods: {
+            signOut() {
+                this.$store.dispatch('setAuth', { username: null, token: null });
+                this.$router.push({
+                    name: 'login'
+                });
+                notification.success(this, "Successfully logged out");
+            }
+        }
     }
 </script>
 
