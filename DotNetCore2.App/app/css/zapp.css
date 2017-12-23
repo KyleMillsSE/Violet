@@ -1,4 +1,19 @@
-﻿.pt-sm {
+﻿/*!
+ *   Custom App CSS
+ *   Author: Kyle Mills
+ */
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+}
+
+.core-login {
+    height: 100vh;
+    width: 100vw;
+    background-color: #0082c8 !important;
+}
+
+.pt-sm {
     padding-top: 10px;
 }
 
@@ -90,3 +105,8 @@ input {
         color: #5cb85c;
         background-color: #fff;
     }
+
+
+.warning-toast {
+    background: #f4980e !important;
+}

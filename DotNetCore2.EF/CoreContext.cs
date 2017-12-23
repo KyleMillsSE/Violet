@@ -1,5 +1,4 @@
-﻿using DotNetCore2.Model.Entities;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,8 +11,6 @@ namespace DotNetCore2.EF
         public CoreContext(DbContextOptions<CoreContext> options) : base(options) {
             
         }
-
-        public DbSet<AuthToken> AuthTokens { get; set; }
 
         /// <summary>
         /// use fluent api to customize db

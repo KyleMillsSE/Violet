@@ -1,6 +1,6 @@
 ﻿export default {
-    user: {
-        name: '',
-        token: ''
+    auth: {
+        username: null,
+        token: null
     }
 }

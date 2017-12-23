@@ -1,4 +1,5 @@
 ﻿using DotNetCore2.EF;
+using DotNetCore2.EF.Commands.Core;
 using DotNetCore2.Model.Domain;
 using DotNetCore2.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,8 @@ namespace DotNetCore2
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<CoreContext>();
 
+            services.AddScoped(typeof(IEntityInsertCommand<>), typeof(EntityInsertCommand<>));
+
             //Configure scoped services
             services.ConfigureCommandServices();
             //Configure identity
@@ -59,7 +62,7 @@ namespace DotNetCore2
                 app.UseExceptionHandler("/Error");
             }
 
-            //app.UseMvc();
+            app.UseMvc();
 
             app.UseStaticFiles();
             //enable jwt

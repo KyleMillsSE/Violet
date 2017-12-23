@@ -1,6 +1,6 @@
 ﻿<template>
     <nav class="navbar navbar-light navbar-fixed-top">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="#/dashboard">
             <img src="/assets/lars-logo.png" style="height: 50px;" alt="Lars logo">
         </a>
 

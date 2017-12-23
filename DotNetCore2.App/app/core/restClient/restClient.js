@@ -1,16 +1,21 @@
 ﻿import axios from 'axios'
+import store from '../../store/store'
 
 const restClient = new axios.create({
     baseURL: 'http://localhost:52694/api/',
-    timeout: 5000,
+   // timeout: 5000,
     headers: {
         'Content-Type': 'application/json'
     }
 })
 
 restClient.interceptors.request.use(function (config) {
-    // Do something before request is sent
-    console.log(config);
+
+    // append auth token to header if exists
+    if (!config.headers.Authorization) {
+        config.headers.Authorization = 'Bearer ' + store.getters.getToken;
+    }
+
     return config;
 }, function (error) {
     console.log(error);
@@ -19,21 +24,23 @@ restClient.interceptors.request.use(function (config) {
 });
 
 // Add a response interceptor
-restClient.interceptors.response.use(function (response) {
-    // Do something with response data
-    console.log(reponse);
-    return response;
-}, function (error) {
-    // Do something with response error
-    console.log(error);
-    return Promise.reject(error);
-});
+restClient.interceptors.response.use(undefined, function (err) {
+    if (err.response.status === 401) {
+        
+        //return getRefreshToken()
+        //    .then(function (success) {
+        //        setTokens(success.access_token, success.refresh_token);
+        //        err.config.__isRetryRequest = true;
+        //        err.config.headers.Authorization = 'Bearer ' + getAccessToken();
+        //        return axios(err.config);
+        //    })
+        //    .catch(function (error) {
+        //        console.log('Refresh login error: ', error);
+        //        throw error;
+        //    });
+    }
 
-/**
-* Helper method to set the header with the token
-*/
-restClient.setToken = () => {
-    restClient.defaults.headers.common.Authorization = `Bearer ${token}`
-}
+    throw err;
+});
 
 export default restClient 

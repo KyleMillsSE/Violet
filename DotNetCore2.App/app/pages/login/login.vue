@@ -1,5 +1,5 @@
 ﻿<template>
-    <div style="height: 100vh; width: 100vw; background-color: #0082c8;">
+    <div class="core-login">
         <div class="off-centered">
             <div class="row">
                 <div class="col-md-6">
@@ -26,21 +26,36 @@
 </template>
 
 <script>
-    import restClient from '../../core/restClient/restClient'
+    import http from '../../core/restClient/httpWrapper'
+    import notification from '../../core/notification/notification'
 
     export default {
 
         name: 'login',
         data() {
             return {
-                username: '',
-                password: ''
+                username: 'KyleMills',
+                password: 'Voiteqadmin1'
             }
         },
         methods: {
             submit() {
-                console.log(this.username);
-                console.log(this.password);
+                http.get('token?username=' + this.username + '&password=' + this.password + '&grantType=password', null).then(result => {
+                    console.log(result);
+                    this.$store.dispatch('setAuth', { username: result.username, token: result.token });
+
+                    http.get('test', null).then(result => { }).catch(err => { });
+                }).catch(err => {
+                    console.log(err);
+                });
+                //restClient.get('token?username=' + this.username + '&password=' + this.password + '&grantType=password')
+                //    .then(response => {
+                //        console.log(response);
+                //       
+                //    })
+                //    .catch(e => {
+                //        notification.error(this, "Invalid username or password")
+                //    })
             }
         }
     }

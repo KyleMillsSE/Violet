@@ -1,6 +1,5 @@
 ﻿using DotNetCore2.EF.Commands;
 using DotNetCore2.Model.Domain;
-using DotNetCore2.Model.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -19,28 +18,26 @@ namespace DotNetCore2.Controllers.Auth
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IOptions<Audience> _settings;
-        private readonly IAuthTokenInsertCommand _authTokenInsertCommand;
 
         public TokenController(UserManager<IdentityUser> userManager,
-            IOptions<Audience> settings,
-            IAuthTokenInsertCommand authTokenInsertCommand)
+            IOptions<Audience> settings)
         {
             _userManager = userManager;
             _settings = settings;
-            _authTokenInsertCommand = authTokenInsertCommand;
         }
 
+
         [HttpGet()]
-        public IActionResult GetToken([FromQuery]dynamic parameters)
+        public IActionResult GetToken([FromQuery]UserDetails token)
         {
-            if (parameters == null)
+            if (token == null)
             {
                 return BadRequest("Invalid parameters");
             }
 
-            if (parameters.grant_type == "password")
+            if (token.GrantType == "password")
             {
-                return Ok(Json(Authorize(parameters)));
+                return Ok(Json(Authorize(token)));
             }
             else
             {
@@ -52,11 +49,11 @@ namespace DotNetCore2.Controllers.Auth
         /// 
         /// </summary>
         /// <param name="parameters"></param>
-        private async Task<string> Authorize(dynamic parameters)
+        private async Task<Authentication> Authorize(UserDetails token)
         { 
-            var identUser = await _userManager.FindByEmailAsync(parameters.username);
+            var identUser = await _userManager.FindByNameAsync(token.Username);
 
-            var isValidated = await _userManager.CheckPasswordAsync(identUser, parameters.password);
+            var isValidated = await _userManager.CheckPasswordAsync(identUser, token.Password);
 
             if (!isValidated)
             {
@@ -65,25 +62,16 @@ namespace DotNetCore2.Controllers.Auth
 
             var refresh_token = Guid.NewGuid().ToString().Replace("-", "");
 
-            var rToken = new AuthToken
-            {
-                ClientId = parameters.client_id,
-                RefreshToken = refresh_token,
-                IsStop = false
-            };
-
-            await _authTokenInsertCommand.ExecuteAsync(rToken);
-
-            return GetJwt(parameters.client_id, refresh_token);
+            return GetJwt(null, refresh_token);
         }
 
-        private string GetJwt(string client_id, string refresh_token)
+        private Authentication GetJwt(string client_id, string refresh_token)
         {
             var now = DateTime.UtcNow;
 
             var claims = new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, client_id),
+               // new Claim(JwtRegisteredClaimNames.Sub, client_id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64)
             };
@@ -97,18 +85,17 @@ namespace DotNetCore2.Controllers.Auth
                 audience: _settings.Value.Aud,
                 claims: claims,
                 notBefore: now,
-                expires: now.Add(TimeSpan.FromMinutes(1)),
+                expires: now.Add(TimeSpan.FromMinutes(2)),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            var response = new
+            var auth = new Authentication
             {
-                access_token = encodedJwt,
-                expires_in = (int)TimeSpan.FromMinutes(2).TotalSeconds,
-                refresh_token = refresh_token,
+                Token = encodedJwt,
+                Expires = (int)TimeSpan.FromMinutes(2).TotalSeconds,
             };
 
-            return JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented });
+            return auth;
         }
     }
 }

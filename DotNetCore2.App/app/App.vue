@@ -10,12 +10,13 @@
 
         
             <router-view></router-view>
-    
+     
     </div>
 </template>
 
 <script>
     import navbar from './pages/_layout/nav.vue'
+
 
     export default {
         name: 'app',
@@ -24,7 +25,6 @@
         },
         computed: {
             displayNav() {
-                console.log(this.$store.getters.shouldDisplayNav)
                 return this.$store.getters.shouldDisplayNav;
             }
         },

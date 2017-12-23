@@ -40,6 +40,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-copy": "^1.0.0",
-    "vue-template-compiler": "2.4.4"
+    "vue-template-compiler": "2.4.4",
+    "vue-toasted": "1.1.24"
   }
 }

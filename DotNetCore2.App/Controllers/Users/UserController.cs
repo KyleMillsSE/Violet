@@ -20,7 +20,7 @@ namespace DotNetCore2.Controllers.Users
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody]UserDetails newUser)
         {
-            var user = new IdentityUser() { Email = newUser.Email, UserName = newUser.Email };
+            var user = new IdentityUser(); //{ Email = newUser.Email, UserName = newUser.Email };
 
             var userCreated = await _userManager.CreateAsync(user);
 

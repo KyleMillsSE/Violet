@@ -17,6 +17,12 @@
     <ProjectReference Include="..\DotNetCore2.Model\DotNetCore2.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Seeds\Dev\" />
+    <Folder Include="Seeds\Production\" />
+    <Folder Include="Seeds\QA\" />
+  </ItemGroup>
+
  
 
 </Project>
