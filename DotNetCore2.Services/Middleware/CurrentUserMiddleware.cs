@@ -20,12 +20,12 @@ namespace DotNetCore2.Services.Middlware
         /// <param name="context"></param>
         /// <param name="applicationUserContext"></param>
         /// <returns></returns>
-        public async Task Invoke(HttpContext context, ApplicationUserContext applicationUserContext)
+        public async Task Invoke(HttpContext context, CurrentApplicationUserService currentApplicationUserService)
         {
             var userId = context.User.FindFirst("UniqueUserIndentifier")?.Value;
 
             if (!String.IsNullOrWhiteSpace(userId))
-                applicationUserContext.SetCurrentUser(userId);
+                currentApplicationUserService.SetCurrentUser(userId);
 
             await next(context);
         }

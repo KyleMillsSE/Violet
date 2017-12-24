@@ -77,9 +77,7 @@ namespace DotNetCore2.Controllers.Auth
 
             var claims = new Claim[]
             {
-                new Claim("UniqueUserIndentifier", userId),
-                //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                //new Claim(JwtRegisteredClaimNames.Iat, now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64)
+                new Claim("UniqueUserIndentifier", userId)
             };
 
             var symmetricKeyAsBase64 = _settings.Value.Secret;

@@ -1,17 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DotNetCore2.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using DotNetCore2.Services;
 
 namespace DotNetCore2.EF
 {
     public class CoreContext : IdentityDbContext<IdentityUser>
     {
-        public CoreContext(DbContextOptions<CoreContext> options, ApplicationUserContext applicationUserContext) : base(options)
+        private readonly CurrentApplicationUserService _currentApplicationUserService;
+        public CoreContext(DbContextOptions<CoreContext> options, CurrentApplicationUserService currentApplicationUserService) : base(options)
         {
-            
+            _currentApplicationUserService = currentApplicationUserService;
+        }
+
+       
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
         }
 
         /// <summary>

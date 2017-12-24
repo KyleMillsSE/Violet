@@ -32,19 +32,18 @@ namespace DotNetCore2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CoreContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("CoreConnection")));
+            services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CoreConnection")));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddEntityFrameworkStores<CoreContext>();
+                 .AddEntityFrameworkStores<CoreContext>();
 
             services.AddScoped(typeof(IEntityInsertCommand<>), typeof(EntityInsertCommand<>));
-            services.AddSingleton(typeof(ApplicationUserContext), typeof(ApplicationUserContext));
+            services.AddScoped<CurrentApplicationUserService>(); //might be wrong??
 
             services.AddMvc();
 
             //Configure scoped services does not work!!
-           // services.ConfigureCommandServices();
+            // services.ConfigureCommandServices();
             //Configure identity
             services.ConfigureIdentityService();
             //configure the jwt   
@@ -68,7 +67,7 @@ namespace DotNetCore2
             //enable jwt
             app.UseAuthentication();
             // custom middlware
-            app.UseDiscoverCurrentUserMiddleware();
+            //   app.UseDiscoverCurrentUserMiddleware();
             app.UseMvc();
             app.UseStaticFiles();
             app.UseMvc(routes =>

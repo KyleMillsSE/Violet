@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DotNetCore2.EF;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -10,14 +11,13 @@ namespace DotNetCore2.Controllers.Users
     {
         public UsersController()
         {
-
         }
-
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllUsers()
+        public IActionResult GetAllUsers()
         {
+         
             throw new NotImplementedException();
         }
     }
