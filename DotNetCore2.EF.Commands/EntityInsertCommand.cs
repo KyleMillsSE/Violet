@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DotNetCore2.EF.Commands.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace DotNetCore2.EF.Commands.Core
+namespace DotNetCore2.EF.Commands
 {
     public class EntityInsertCommand<TMdl> : IEntityInsertCommand<TMdl>
         where TMdl : class
@@ -16,7 +14,6 @@ namespace DotNetCore2.EF.Commands.Core
         {
             _context = context;
             _dbset = context.Set<TMdl>();
-
         }
 
         public async Task<TMdl> ExecuteAsync(TMdl entity)

@@ -28,7 +28,7 @@ namespace DotNetCore2.Controllers.Auth
 
         [HttpGet()]
         public IActionResult GetToken([FromQuery]UserDetails token)
-        {
+        { 
             if (token == null)
             {
                 return BadRequest("Invalid parameters");
@@ -59,7 +59,7 @@ namespace DotNetCore2.Controllers.Auth
                 throw new ArgumentException("Invalid parameters");
             }
 
-            var token = GetToken();
+            var token = GetToken(identUser.Id);
 
             var authentication = new Authentication()
             {
@@ -71,15 +71,15 @@ namespace DotNetCore2.Controllers.Auth
             return authentication;
         }
 
-        private (string value, int expiry) GetToken()
+        private (string value, int expiry) GetToken(string userId)
         {
             var now = DateTime.UtcNow;
 
             var claims = new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, "123123"),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64)
+                new Claim("UniqueUserIndentifier", userId),
+                //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                //new Claim(JwtRegisteredClaimNames.Iat, now.ToUniversalTime().ToString(), ClaimValueTypes.Integer64)
             };
 
             var symmetricKeyAsBase64 = _settings.Value.Secret;

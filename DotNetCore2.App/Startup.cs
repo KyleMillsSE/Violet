@@ -1,6 +1,9 @@
 ﻿using DotNetCore2.EF;
-using DotNetCore2.EF.Commands.Core;
+using DotNetCore2.EF.Commands;
+using DotNetCore2.EF.Commands.Contracts;
 using DotNetCore2.Model.Domain;
+using DotNetCore2.Services;
+using DotNetCore2.Services.Middleware;
 using DotNetCore2.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,11 +39,12 @@ namespace DotNetCore2
                 .AddEntityFrameworkStores<CoreContext>();
 
             services.AddScoped(typeof(IEntityInsertCommand<>), typeof(EntityInsertCommand<>));
+            services.AddSingleton(typeof(ApplicationUserContext), typeof(ApplicationUserContext));
 
             services.AddMvc();
 
-            //Configure scoped services
-            services.ConfigureCommandServices();
+            //Configure scoped services does not work!!
+           // services.ConfigureCommandServices();
             //Configure identity
             services.ConfigureIdentityService();
             //configure the jwt   
@@ -61,14 +65,12 @@ namespace DotNetCore2
             {
                 app.UseExceptionHandler("/Error");
             }
-
             //enable jwt
             app.UseAuthentication();
-
+            // custom middlware
+            app.UseDiscoverCurrentUserMiddleware();
             app.UseMvc();
-
             app.UseStaticFiles();
-          
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

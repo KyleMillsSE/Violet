@@ -12,7 +12,7 @@ namespace DotNetCore2.WebApi.Configurations
 {
     public static class ServiceConfigurations
     {
-        private const string COMMAND_NAMESPACE = "DotNetCore2.EF";
+        private const string COMMAND_NAMESPACE = "DotNetCore2.EF.Commands";
 
         public static void ConfigureCommandServices(this IServiceCollection services)
         {
