@@ -2,6 +2,6 @@
 {
     public interface ISoftEntity
     {
-        bool Deleted { get; set; }
+        bool IsDeleted { get; set; }
     }
 }

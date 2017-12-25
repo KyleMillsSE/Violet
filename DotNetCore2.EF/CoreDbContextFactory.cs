@@ -18,7 +18,7 @@ namespace DotNetCore2.EF
             var builder = new DbContextOptionsBuilder<CoreContext>();
             var connectionString = configuration.GetConnectionString("CoreConnection");
             builder.UseSqlServer(connectionString);
-            return new CoreContext(builder.Options, new ApplicationUserContext());
+            return new CoreContext(builder.Options, new CurrentApplicationUserService());
         }
     }
 }

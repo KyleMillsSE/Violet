@@ -34,9 +34,6 @@ namespace DotNetCore2
         {
             services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CoreConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                 .AddEntityFrameworkStores<CoreContext>();
-
             services.AddScoped(typeof(IEntityInsertCommand<>), typeof(EntityInsertCommand<>));
             services.AddScoped<CurrentApplicationUserService>(); //might be wrong??
 
