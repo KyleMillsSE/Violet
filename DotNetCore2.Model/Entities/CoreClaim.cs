@@ -11,7 +11,6 @@ namespace DotNetCore2.Model.Entities
         public string Description { get; set; }
 
 
-        public virtual ICollection<CoreUser> Users { get; set; }
-        public virtual ICollection<CoreClaim> DependancyClaims { get; set; }
+        public virtual ICollection<CoreUserClaim> UserClaims { get; set; }
     }
 }

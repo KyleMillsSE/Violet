@@ -4,7 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace DotNetCore2.EF
 {
@@ -31,18 +34,32 @@ namespace DotNetCore2.EF
         /// use fluent api to customize db
         /// </summary>
         /// <param name="builder"></param>
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
+            modelBuilder.Entity<CoreUser>().HasOne(x => x.ModifiedBy).WithMany().HasForeignKey(x => x.ModifiedById);
+            modelBuilder.Entity<CoreUser>().HasOne(x => x.CreatedBy).WithMany().HasForeignKey(x => x.CreatedById);
 
-            builder.Entity<CoreClaim>().HasMany(x => x.DependancyClaims).WithMany();
-            builder.Entity<CoreUser>().HasMany(x => x.Claims).WithMany(x => x.Users); // For some reason EF can't work out that this is a many to many without help
+            modelBuilder.Entity<CoreUserClaim>()
+                .HasKey(x => new { x.UserId, x.ClaimId });
 
-            base.OnModelCreating(builder);
+            modelBuilder.Entity<CoreUserClaim>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserClaims)
+                .HasForeignKey(x => x.UserId);
+
+            modelBuilder.Entity<CoreUserClaim>()
+                .HasOne(x => x.Claim)
+                .WithMany(x => x.UserClaims)
+                .HasForeignKey(x => x.ClaimId);
+
+            base.OnModelCreating(modelBuilder);
         }
+
     }
+
 }

@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="Seeds\Dev\" />
     <Folder Include="Seeds\Production\" />
     <Folder Include="Seeds\QA\" />

@@ -47,6 +47,8 @@ namespace DotNetCore2
             services.ConfigureJwtAuthService(Configuration);
 
             services.Configure<Audience>(Configuration.GetSection("Audience"));
+            services.Configure<AppEnvironment>(Configuration.GetSection("AppEnvironment"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
