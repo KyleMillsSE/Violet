@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DotNetCore2.Services
+namespace DotNetCore2.App
 {
     public class CurrentApplicationUserService
     {
-        private static Guid? UserId;
+        private static Guid UserId;
 
-        public Guid GetCurrentUser() => UserId ?? throw new Exception("Current user id is null, something has gone wrong");
+        public Guid GetCurrentUser() => UserId ?? 
         public void SetCurrentUser(Guid userId) => UserId = userId;
         public void SetCurrentUser(string userId) => UserId = Guid.Parse(userId);
     }

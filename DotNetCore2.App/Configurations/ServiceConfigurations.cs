@@ -26,22 +26,6 @@ namespace DotNetCore2.WebApi.Configurations
                 services.AddScoped(service.Interface, service.Type);
         }
 
-        public static void ConfigureIdentityService(this IServiceCollection services)
-        {
-            // Configure Identity
-            services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-                // User settings
-                options.User.RequireUniqueEmail = true;
-            });
-        }
-
         public static void ConfigureJwtAuthService(this IServiceCollection services, IConfiguration Configuration)
         {
             var audienceConfig = Configuration.GetSection("Audience");

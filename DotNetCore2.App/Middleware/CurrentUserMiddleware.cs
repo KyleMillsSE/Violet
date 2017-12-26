@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 
-namespace DotNetCore2.Services.Middlware
+namespace DotNetCore2.App.Middleware
 {
     public class DiscoverCurrentUserMiddleware
     {
@@ -30,4 +29,7 @@ namespace DotNetCore2.Services.Middlware
             await next(context);
         }
     }
+
+
+
 }

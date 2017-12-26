@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotNetCore2.Model.Entities
 {
-    public class CoreUser : IVersionedEntity, ISoftEntity, IAuditedEntity
+    public class CoreUser : IVersionedEntity, ISoftEntity, IAuditedEntity, IEntity
     {
         public Guid Id { get; set; }
         public string Username { get; set; }

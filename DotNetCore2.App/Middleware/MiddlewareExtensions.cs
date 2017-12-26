@@ -1,10 +1,6 @@
-﻿using DotNetCore2.Services.Middlware;
-using Microsoft.AspNetCore.Builder;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.AspNetCore.Builder;
 
-namespace DotNetCore2.Services.Middleware
+namespace DotNetCore2.App.Middleware
 {
     public static class MiddlewareExtensions
     {

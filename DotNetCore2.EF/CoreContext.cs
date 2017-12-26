@@ -1,13 +1,8 @@
-﻿using DotNetCore2.Model.Entities;
-using DotNetCore2.Services;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
+﻿using DotNetCore2.Model.Contracts;
+using DotNetCore2.Model.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace DotNetCore2.EF
 {
@@ -15,8 +10,7 @@ namespace DotNetCore2.EF
     {
         private readonly CurrentApplicationUserService _currentApplicationUserService;
 
-        public CoreContext(DbContextOptions<CoreContext> options, 
-            CurrentApplicationUserService currentApplicationUserService) 
+        public CoreContext(DbContextOptions<CoreContext> options, CurrentApplicationUserService currentApplicationUserService)
             : base(options)
         {
             _currentApplicationUserService = currentApplicationUserService;
@@ -25,8 +19,35 @@ namespace DotNetCore2.EF
         public DbSet<CoreUser> Users { get; set; }
         public DbSet<CoreClaim> Claims { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override int SaveChanges()
         {
+            var now = DateTime.Now;
+            var userId = _currentApplicationUserService.GetCurrentUser();
+
+            //Generate new guids for new entities
+            var newEntities = ChangeTracker.Entries<IEntity>().Where(x => x.State == EntityState.Added && x.Entity.Id == Guid.Empty);
+            newEntities.ForEach(x => x.Entity.Id = Guid.NewGuid());
+
+            var modifiedEntities = ChangeTracker.Entries<IAuditedEntity>().Where(x => x.State == EntityState.Modified);
+            foreach (var modifiedEntity in modifiedEntities)
+            {
+                modifiedEntity.Entity.ModifiedAt = now;
+                modifiedEntity.Entity.ModifiedById = userId;
+            }
+
+            var createdEntities = ChangeTracker.Entries<IAuditedEntity>().Where(x => x.State == EntityState.Added);
+            foreach (var modifiedEntity in modifiedEntities)
+            {
+                modifiedEntity.Entity.CreatedAt = now;
+                modifiedEntity.Entity.CreatedById = userId;
+                modifiedEntity.Entity.ModifiedAt = now;
+                modifiedEntity.Entity.ModifiedById = userId;
+            }
+
             return base.SaveChanges();
         }
 
@@ -41,9 +62,11 @@ namespace DotNetCore2.EF
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
+            //Create one to one relantionships
             modelBuilder.Entity<CoreUser>().HasOne(x => x.ModifiedBy).WithMany().HasForeignKey(x => x.ModifiedById);
             modelBuilder.Entity<CoreUser>().HasOne(x => x.CreatedBy).WithMany().HasForeignKey(x => x.CreatedById);
 
+            //Create many to many relantionship between claim and user implementing middle man class to handle the relation
             modelBuilder.Entity<CoreUserClaim>()
                 .HasKey(x => new { x.UserId, x.ClaimId });
 
@@ -59,7 +82,5 @@ namespace DotNetCore2.EF
 
             base.OnModelCreating(modelBuilder);
         }
-
     }
-
 }
