@@ -2,7 +2,7 @@
 
 namespace DotNetCore2.EF.Commands.Contracts
 {
-    public interface IEntityInsertCommand<TMdl>
+    public interface ICoreEntityInsertCommand<TMdl>
     {
         Task<TMdl> ExecuteAsync(TMdl entity);
     }

@@ -8,6 +8,7 @@ namespace DotNetCore2.Model.Entities
 {
     public class CoreUser : IVersionedEntity, ISoftEntity, IAuditedEntity, IEntity
     {
+        [Key]
         public Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -19,11 +20,15 @@ namespace DotNetCore2.Model.Entities
         public bool IsDeleted { get; set; }
         public byte[] Version { get; set; }
 
-
         [ForeignKey("CreatedById")]
         public virtual CoreUser CreatedBy { get; set; }
         [ForeignKey("ModifiedById")]
         public virtual CoreUser ModifiedBy { get; set; }
         public virtual ICollection<CoreUserClaim> UserClaims { get; set; }
+
+        public static class KnownUserIds
+        {
+            public static Guid CoreAdminUser = Guid.Parse("4117bbfa-2c9a-4e75-8da2-8e9855fa789d");
+        }
     }
 }

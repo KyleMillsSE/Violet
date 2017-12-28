@@ -11,7 +11,7 @@ using System;
 namespace DotNetCore2.EF.Migrations
 {
     [DbContext(typeof(CoreContext))]
-    [Migration("20171226201224_Init")]
+    [Migration("20171228223742_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,7 +77,7 @@ namespace DotNetCore2.EF.Migrations
 
                     b.HasIndex("ClaimId");
 
-                    b.ToTable("CoreUserClaim");
+                    b.ToTable("UserClaims");
                 });
 
             modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUser", b =>

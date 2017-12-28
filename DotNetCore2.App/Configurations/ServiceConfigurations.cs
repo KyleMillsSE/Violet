@@ -16,14 +16,14 @@ namespace DotNetCore2.WebApi.Configurations
 
         public static void ConfigureCommandServices(this IServiceCollection services)
         {
-            var commandServices = typeof(CommandBootstrap)
-                .Assembly
-                .ExportedTypes
-                .Where(ep => ep.GetInterfaces().Any() && ep.Namespace.Contains(COMMAND_NAMESPACE))
-                .Select(ep => new { Interface = ep.GetInterfaces().First(), Type = ep });
+            //var commandServices = typeof(CommandBootstrap)
+            //    .Assembly
+            //    .ExportedTypes
+            //    .Where(ep => ep.GetInterfaces().Any() && ep.Namespace.Contains(COMMAND_NAMESPACE))
+            //    .Select(ep => new { Interface = ep.GetInterfaces().First(), Type = ep });
 
-            foreach (var service in commandServices.Where(cs => !cs.Interface.ContainsGenericParameters))
-                services.AddScoped(service.Interface, service.Type);
+            //foreach (var service in commandServices.Where(cs => !cs.Interface.ContainsGenericParameters))
+            //    services.AddScoped(service.Interface, service.Type);
         }
 
         public static void ConfigureJwtAuthService(this IServiceCollection services, IConfiguration Configuration)

@@ -3,7 +3,6 @@ using DotNetCore2.EF.Commands;
 using DotNetCore2.EF.Commands.Contracts;
 using DotNetCore2.Model.Domain;
 using DotNetCore2.Services;
-using DotNetCore2.Services.Middleware;
 using DotNetCore2.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -34,15 +33,14 @@ namespace DotNetCore2
         {
             services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CoreConnection")));
 
-            services.AddScoped(typeof(IEntityInsertCommand<>), typeof(EntityInsertCommand<>));
+            services.AddScoped(typeof(ICoreEntityInsertCommand<>), typeof(CoreEntityInsertCommand<>));
             services.AddScoped<CurrentApplicationUserService>(); //might be wrong??
 
             services.AddMvc();
 
             //Configure scoped services does not work!!
             // services.ConfigureCommandServices();
-            //Configure identity
-            services.ConfigureIdentityService();
+
             //configure the jwt   
             services.ConfigureJwtAuthService(Configuration);
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace DotNetCore2.EF.Queries.Core
+namespace DotNetCore2.EF.Queries
 {
     public abstract class GenericQuery<TMdl> : IGenericQuery<TMdl>, IEnumerable<TMdl>  where TMdl : class
     {

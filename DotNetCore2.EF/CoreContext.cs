@@ -1,5 +1,7 @@
-﻿using DotNetCore2.Model.Contracts;
+﻿using DotNetCore2.Model;
+using DotNetCore2.Model.Contracts;
 using DotNetCore2.Model.Entities;
+using DotNetCore2.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -18,6 +20,7 @@ namespace DotNetCore2.EF
 
         public DbSet<CoreUser> Users { get; set; }
         public DbSet<CoreClaim> Claims { get; set; }
+        public DbSet<CoreUserClaim> UserClaims { get; set; }
 
         /// <summary>
         /// 
@@ -28,7 +31,7 @@ namespace DotNetCore2.EF
             var now = DateTime.Now;
             var userId = _currentApplicationUserService.GetCurrentUser();
 
-            //Generate new guids for new entities
+            //Generate new guids for new entities if not populated by EF
             var newEntities = ChangeTracker.Entries<IEntity>().Where(x => x.State == EntityState.Added && x.Entity.Id == Guid.Empty);
             newEntities.ForEach(x => x.Entity.Id = Guid.NewGuid());
 
@@ -40,12 +43,12 @@ namespace DotNetCore2.EF
             }
 
             var createdEntities = ChangeTracker.Entries<IAuditedEntity>().Where(x => x.State == EntityState.Added);
-            foreach (var modifiedEntity in modifiedEntities)
+            foreach (var createdEntity in createdEntities)
             {
-                modifiedEntity.Entity.CreatedAt = now;
-                modifiedEntity.Entity.CreatedById = userId;
-                modifiedEntity.Entity.ModifiedAt = now;
-                modifiedEntity.Entity.ModifiedById = userId;
+                createdEntity.Entity.CreatedAt = now;
+                createdEntity.Entity.CreatedById = userId;
+                createdEntity.Entity.ModifiedAt = now;
+                createdEntity.Entity.ModifiedById = userId;
             }
 
             return base.SaveChanges();

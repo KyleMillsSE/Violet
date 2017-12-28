@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using DotNetCore2.EF;
 using DotNetCore2.Model.Domain;
 using DotNetCore2.EF.Seeds.Dev;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace DotNetCore2
 {
@@ -26,9 +28,11 @@ namespace DotNetCore2
                 try
                 {
                     var context = services.GetRequiredService<CoreContext>();
-                    var appEnvironment = services.GetRequiredService<AppEnvironment>();
+                    var appEnvironment = services.GetRequiredService<IOptions<AppEnvironment>>();
 
-                    switch (appEnvironment.Seeding)
+                    context.Database.Migrate();
+
+                    switch (appEnvironment.Value.Seeding)
                     {
                         case "Dev":
                             CoreDevSeeder.Seed(context);
@@ -40,6 +44,7 @@ namespace DotNetCore2
                 }
                 catch (Exception ex)
                 {
+                    throw ex;
                    // var logger = services.GetRequiredService<ILogger<Program>>();
                     //logger.LogError(ex, "An error occurred while seeding the database.");
                 }

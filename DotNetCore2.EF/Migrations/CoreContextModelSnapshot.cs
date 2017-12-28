@@ -76,7 +76,7 @@ namespace DotNetCore2.EF.Migrations
 
                     b.HasIndex("ClaimId");
 
-                    b.ToTable("CoreUserClaim");
+                    b.ToTable("UserClaims");
                 });
 
             modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUser", b =>

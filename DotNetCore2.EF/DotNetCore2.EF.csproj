@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DotNetCore2.Model\DotNetCore2.Model.csproj" />
+    <ProjectReference Include="..\DotNetCore2.Services\DotNetCore2.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

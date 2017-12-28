@@ -54,7 +54,7 @@ namespace DotNetCore2.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CoreUserClaim",
+                name: "UserClaims",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
@@ -62,15 +62,15 @@ namespace DotNetCore2.EF.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CoreUserClaim", x => new { x.UserId, x.ClaimId });
+                    table.PrimaryKey("PK_UserClaims", x => new { x.UserId, x.ClaimId });
                     table.ForeignKey(
-                        name: "FK_CoreUserClaim_Claims_ClaimId",
+                        name: "FK_UserClaims_Claims_ClaimId",
                         column: x => x.ClaimId,
                         principalTable: "Claims",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CoreUserClaim_Users_UserId",
+                        name: "FK_UserClaims_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -78,8 +78,8 @@ namespace DotNetCore2.EF.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CoreUserClaim_ClaimId",
-                table: "CoreUserClaim",
+                name: "IX_UserClaims_ClaimId",
+                table: "UserClaims",
                 column: "ClaimId");
 
             migrationBuilder.CreateIndex(
@@ -96,7 +96,7 @@ namespace DotNetCore2.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CoreUserClaim");
+                name: "UserClaims");
 
             migrationBuilder.DropTable(
                 name: "Claims");

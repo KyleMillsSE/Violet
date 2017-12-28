@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 namespace DotNetCore2.EF.Commands
 {
-    public class EntityInsertCommand<TMdl> : IEntityInsertCommand<TMdl>
+    public class CoreEntityInsertCommand<TMdl> : ICoreEntityInsertCommand<TMdl>
         where TMdl : class
     {
         private CoreContext _context;
         private DbSet<TMdl> _dbset;
 
-        public EntityInsertCommand(CoreContext context)
+        public CoreEntityInsertCommand(CoreContext context)
         {
             _context = context;
             _dbset = context.Set<TMdl>();
