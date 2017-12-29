@@ -9,6 +9,8 @@ namespace DotNetCore2.EF.Seeds.Dev
     {
         public static void Seed(CoreContext context)
         {
+            context.Clear<CoreUser>();
+
             context.Users.AddRange(new List<CoreUser>() {
                 new CoreUser(){ Id = CoreUser.KnownUserIds.CoreAdminUser, Email = "KMillssd@gmail.com", Username = "KyleMills", Password = CryptoHelperWrapper.HashPassword("CoreDevelopment1!"), IsDeleted = false },
                 new CoreUser(){ Id = Guid.Empty, Email = "Testd@gmail.com", Username = "Test1", Password = CryptoHelperWrapper.HashPassword("CoreDevelopment1!"), IsDeleted = false },

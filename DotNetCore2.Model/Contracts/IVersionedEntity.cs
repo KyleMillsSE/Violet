@@ -8,7 +8,6 @@ namespace DotNetCore2.Model.Contracts
 {
     public interface IVersionedEntity
     {
-        [ConcurrencyCheck, Required, Timestamp]
         byte[] Version { get; set; }
     }
 }

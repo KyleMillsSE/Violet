@@ -11,7 +11,7 @@ using System;
 namespace DotNetCore2.EF.Migrations
 {
     [DbContext(typeof(CoreContext))]
-    [Migration("20171228223742_Init")]
+    [Migration("20171229201337_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,28 +23,40 @@ namespace DotNetCore2.EF.Migrations
 
             modelBuilder.Entity("DotNetCore2.Model.Entities.CoreClaim", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("Id");
 
-                    b.Property<string>("Description");
+                    b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("Name");
+                    b.Property<Guid>("CreatedById");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
 
                     b.ToTable("Claims");
                 });
 
             modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUser", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<Guid>("Id");
 
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<Guid>("CreatedById");
 
-                    b.Property<string>("Email");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(2500)");
 
                     b.Property<bool>("IsDeleted");
 
@@ -52,11 +64,16 @@ namespace DotNetCore2.EF.Migrations
 
                     b.Property<Guid>("ModifiedById");
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(2500)");
 
-                    b.Property<string>("Username");
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(2500)");
 
-                    b.Property<byte[]>("Version");
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
 
@@ -78,6 +95,14 @@ namespace DotNetCore2.EF.Migrations
                     b.HasIndex("ClaimId");
 
                     b.ToTable("UserClaims");
+                });
+
+            modelBuilder.Entity("DotNetCore2.Model.Entities.CoreClaim", b =>
+                {
+                    b.HasOne("DotNetCore2.Model.Entities.CoreUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUser", b =>

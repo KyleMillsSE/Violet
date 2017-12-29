@@ -10,7 +10,7 @@ namespace DotNetCore2.EF
     {
         public CoreContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
+            IConfigurationRoot configuration = new ConfigurationBuilder() //TODO INJECT SCOPE HERE AND GET CONN STRING
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();

@@ -6,24 +6,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DotNetCore2.Model.Entities
 {
-    public class CoreUser : IVersionedEntity, ISoftEntity, IAuditedEntity, IEntity
+    public class CoreUser : MutableEntity, ISoftEntity
     {
-        [Key]
-        public Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public Guid CreatedById { get; set; }
-        public DateTime ModifiedAt { get; set; }
-        public Guid ModifiedById { get; set; }
         public bool IsDeleted { get; set; }
-        public byte[] Version { get; set; }
 
-        [ForeignKey("CreatedById")]
-        public virtual CoreUser CreatedBy { get; set; }
-        [ForeignKey("ModifiedById")]
-        public virtual CoreUser ModifiedBy { get; set; }
         public virtual ICollection<CoreUserClaim> UserClaims { get; set; }
 
         public static class KnownUserIds

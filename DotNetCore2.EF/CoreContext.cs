@@ -35,20 +35,27 @@ namespace DotNetCore2.EF
             var newEntities = ChangeTracker.Entries<IEntity>().Where(x => x.State == EntityState.Added && x.Entity.Id == Guid.Empty);
             newEntities.ForEach(x => x.Entity.Id = Guid.NewGuid());
 
-            var modifiedEntities = ChangeTracker.Entries<IAuditedEntity>().Where(x => x.State == EntityState.Modified);
+            var modifiedEntities = ChangeTracker.Entries<IMutableEntity>().Where(x => x.State == EntityState.Modified);
             foreach (var modifiedEntity in modifiedEntities)
             {
                 modifiedEntity.Entity.ModifiedAt = now;
                 modifiedEntity.Entity.ModifiedById = userId;
             }
 
-            var createdEntities = ChangeTracker.Entries<IAuditedEntity>().Where(x => x.State == EntityState.Added);
-            foreach (var createdEntity in createdEntities)
+            var createdMutableEntities = ChangeTracker.Entries<IMutableEntity>().Where(x => x.State == EntityState.Added);
+            foreach (var createdEntity in createdMutableEntities)
             {
                 createdEntity.Entity.CreatedAt = now;
                 createdEntity.Entity.CreatedById = userId;
                 createdEntity.Entity.ModifiedAt = now;
                 createdEntity.Entity.ModifiedById = userId;
+            }
+
+            var createdImmutableEntities = ChangeTracker.Entries<IImmutableEntity>().Where(x => x.State == EntityState.Added);
+            foreach (var createdEntity in createdImmutableEntities)
+            {
+                createdEntity.Entity.CreatedAt = now;
+                createdEntity.Entity.CreatedById = userId;
             }
 
             return base.SaveChanges();
@@ -60,9 +67,18 @@ namespace DotNetCore2.EF
         /// <param name="builder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            foreach (var pb in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(t => t.GetProperties())
+                .Where(p => p.ClrType == typeof(string))
+                .Select(p => modelBuilder.Entity(p.DeclaringEntityType.ClrType).Property(p.Name)))
+            {
+                pb.HasColumnType("nvarchar(2500)");
             }
 
             //Create one to one relantionships
