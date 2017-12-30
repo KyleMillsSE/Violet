@@ -1,12 +1,14 @@
-﻿using DotNetCore2.EF;
+﻿using DotNetCore2.App.Middleware;
+using DotNetCore2.EF;
 using DotNetCore2.EF.Commands;
 using DotNetCore2.EF.Commands.Contracts;
+using DotNetCore2.EF.Queries;
+using DotNetCore2.EF.Queries.Contracts;
 using DotNetCore2.Model.Domain;
 using DotNetCore2.Services;
 using DotNetCore2.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,19 +36,20 @@ namespace DotNetCore2
             services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CoreConnection")));
 
             services.AddScoped(typeof(ICoreEntityInsertCommand<>), typeof(CoreEntityInsertCommand<>));
-            services.AddScoped<CurrentApplicationUserService>(); //might be wrong??
+            services.AddScoped(typeof(ICoreGetByIdQuery<>), typeof(CoreGetByIdQuery<>));
+            services.AddScoped(typeof(ICoreGetAllQuery<>), typeof(CoreGetAllQuery<>));
+            services.AddScoped<CurrentApplicationUserService>(); //might be wrong?? might have to be singleton?
 
             services.AddMvc();
 
-            //Configure scoped services does not work!!
-            // services.ConfigureCommandServices();
+            //Configure scoped services does not work!! yet 
+            //services.ConfigureCommandServices();
 
             //configure the jwt   
             services.ConfigureJwtAuthService(Configuration);
 
             services.Configure<Audience>(Configuration.GetSection("Audience"));
             services.Configure<AppEnvironment>(Configuration.GetSection("AppEnvironment"));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,9 +67,10 @@ namespace DotNetCore2
             //enable jwt
             app.UseAuthentication();
             // custom middlware
-            //   app.UseDiscoverCurrentUserMiddleware();
-            app.UseMvc();
+            app.UseDiscoverCurrentUserMiddleware();
+            
             app.UseStaticFiles();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

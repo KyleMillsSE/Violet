@@ -20,7 +20,7 @@ namespace DotNetCore2.EF
 
         public DbSet<CoreUser> Users { get; set; }
         public DbSet<CoreClaim> Claims { get; set; }
-        public DbSet<CoreUserClaim> UserClaims { get; set; }
+        private DbSet<CoreUserClaim> UserClaims { get; set; }
 
         /// <summary>
         /// 

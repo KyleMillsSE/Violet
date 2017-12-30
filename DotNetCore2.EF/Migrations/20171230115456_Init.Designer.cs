@@ -11,7 +11,7 @@ using System;
 namespace DotNetCore2.EF.Migrations
 {
     [DbContext(typeof(CoreContext))]
-    [Migration("20171229201337_Init")]
+    [Migration("20171230115456_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,7 +23,8 @@ namespace DotNetCore2.EF.Migrations
 
             modelBuilder.Entity("DotNetCore2.Model.Entities.CoreClaim", b =>
                 {
-                    b.Property<Guid>("Id");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
 
@@ -49,7 +50,8 @@ namespace DotNetCore2.EF.Migrations
 
             modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUser", b =>
                 {
-                    b.Property<Guid>("Id");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
 

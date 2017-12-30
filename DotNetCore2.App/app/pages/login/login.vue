@@ -40,12 +40,11 @@
         methods: {
             submit() {
                 http.get('token?username=' + this.username + '&password=' + this.password + '&grantType=password').then(result => {
-
-                    http.get('users').then(r => { }).catch(err => { });
                     this.$store.dispatch('setAuth', { username: result.username, token: result.token });
                     this.$router.push({
                         name: 'dashboard'
                     });
+
                     notification.success(this, "Successfully logged in");
                 }).catch(err => {
                     notification.error(this, "Invalid username or password");

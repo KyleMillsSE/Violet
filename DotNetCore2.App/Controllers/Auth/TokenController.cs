@@ -1,12 +1,13 @@
-﻿using DotNetCore2.EF.Commands;
+﻿using DotNetCore2.EF.Queries.Contracts;
 using DotNetCore2.Model.Domain;
-using Microsoft.AspNetCore.Identity;
+using DotNetCore2.Model.Entities;
+using DotNetCore2.Services.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +17,12 @@ namespace DotNetCore2.Controllers.Auth
     [Route("api/token")]
     public class TokenController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly ICoreGetAllQuery<CoreUser> _userQuery;
         private readonly IOptions<Audience> _settings;
 
-        public TokenController(UserManager<IdentityUser> userManager,
-            IOptions<Audience> settings)
+        public TokenController(ICoreGetAllQuery<CoreUser> userQuery, IOptions<Audience> settings)
         {
-            _userManager = userManager;
+            _userQuery = userQuery;
             _settings = settings;
         }
 
@@ -50,16 +50,21 @@ namespace DotNetCore2.Controllers.Auth
         /// <param name="parameters"></param>
         private async Task<Authentication> Authorize(UserDetails userDetails)
         {
-            var identUser = await _userManager.FindByNameAsync(userDetails.Username);
+            var identUser = _userQuery.Execute().FirstOrDefault(u => u.Username == userDetails.Username);
 
-            var isValidated = await _userManager.CheckPasswordAsync(identUser, userDetails.Password);
+            if (identUser == null)
+            {
+                throw new ArgumentException("Invalid parameters");
+            }
+
+            var isValidated = CryptoHelperWrapper.VerifyPassword(identUser.Password, userDetails.Password);
 
             if (!isValidated)
             {
                 throw new ArgumentException("Invalid parameters");
             }
 
-            var token = GetToken(identUser.Id);
+            var token = GetToken(identUser.Id.ToString());
 
             var authentication = new Authentication()
             {

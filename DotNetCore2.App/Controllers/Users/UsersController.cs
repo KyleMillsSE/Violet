@@ -17,8 +17,7 @@ namespace DotNetCore2.Controllers.Users
         [Authorize]
         public IActionResult GetAllUsers()
         {
-         
-            throw new NotImplementedException();
+            return Ok();
         }
     }
 }

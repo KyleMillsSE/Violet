@@ -10,7 +10,6 @@ namespace DotNetCore2.Model.Entities
     public abstract class MutableEntity : IMutableEntity, IEntity, IVersionedEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
         public DateTime CreatedAt { get; set; }
         public Guid CreatedById { get; set; }

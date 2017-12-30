@@ -4,8 +4,9 @@ using System.Text;
 
 namespace DotNetCore2.EF.Queries.Contracts
 {
-    public interface IGenericQuery<TMdl>
+    public interface ICoreGetByIdQuery<T> 
+        where T : class
     {
-        IEnumerator<TMdl> GetEnumerator();
+        T Execute(Guid id);
     }
 }
