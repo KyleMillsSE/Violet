@@ -1,6 +1,7 @@
 ﻿import vue from 'vue'
 import vueRouter from 'vue-router'
 import loginPage from '../pages/login/login.vue'
+import usersPage from '../pages/users/users.vue'
 import dashboardPage from '../pages/dashboard/dashboard.vue'
 import store from '../store/store'
 
@@ -16,6 +17,12 @@ const routes = [
         path: '/dashboard',
         name: 'dashboard',
         component: dashboardPage,
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/users',
+        name: 'users',
+        component: usersPage,
         meta: { requiresAuth: true }
     },
     {

@@ -28,19 +28,26 @@ namespace DotNetCore2.Controllers.Auth
 
         [HttpGet()]
         public IActionResult GetToken([FromQuery]UserDetails token)
-        { 
-            if (token == null)
+        {
+            try
+            {
+                if (token == null)
+                {
+                    return BadRequest("Invalid parameters");
+                }
+
+                if (token.GrantType == "password")
+                {
+                    return Ok(Json(Authorize(token)));
+                }
+                else
+                {
+                    return BadRequest("Invalid grant type");
+                }
+            }
+            catch (Exception ex)
             {
                 return BadRequest("Invalid parameters");
-            }
-
-            if (token.GrantType == "password")
-            {
-                return Ok(Json(Authorize(token)));
-            }
-            else
-            {
-                return BadRequest("Invalid grant type");
             }
         }
 

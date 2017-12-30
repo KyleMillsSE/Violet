@@ -34,7 +34,7 @@
         data() {
             return {
                 username: 'KyleMills',
-                password: 'Voiteqadmin1'
+                password: 'CoreDevelopment1!'
             }
         },
         methods: {
@@ -44,7 +44,6 @@
                     this.$router.push({
                         name: 'dashboard'
                     });
-
                     notification.success(this, "Successfully logged in");
                 }).catch(err => {
                     notification.error(this, "Invalid username or password");

@@ -17,9 +17,9 @@ namespace DotNetCore2.EF.Queries
             _context = context;
         }
 
-        public IEnumerable<T> Execute()
+        public IEnumerable<T> Execute(bool includeDeleted = false)
         {
-            if (typeof(ISoftEntity).IsAssignableFrom(typeof(T)))
+            if (typeof(ISoftEntity).IsAssignableFrom(typeof(T)) && !includeDeleted)
                 return _context.Set<T>().Where(x => !(x as ISoftEntity).IsDeleted);
             else
                 return _context.Set<T>();
