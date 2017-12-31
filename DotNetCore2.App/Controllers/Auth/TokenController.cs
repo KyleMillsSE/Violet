@@ -1,7 +1,9 @@
 ﻿using DotNetCore2.EF.Queries.Contracts;
-using DotNetCore2.Model.Domain;
+using DotNetCore2.Model.Domain.Auth;
+using DotNetCore2.Model.Domain.User;
+using DotNetCore2.Model.Domain.Utils;
 using DotNetCore2.Model.Entities;
-using DotNetCore2.Services.Helpers;
+using DotNetCore2.Services.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -27,18 +29,18 @@ namespace DotNetCore2.Controllers.Auth
         }
 
         [HttpGet()]
-        public IActionResult GetToken([FromQuery]UserDetails token)
+        public IActionResult GetToken([FromQuery]UserLoginDto user)
         {
             try
             {
-                if (token == null)
+                if (user == null)
                 {
                     return BadRequest("Invalid parameters");
                 }
 
-                if (token.GrantType == "password")
+                if (user.GrantType == "password")
                 {
-                    return Ok(Json(Authorize(token)));
+                    return Ok(Authorize(user));
                 }
                 else
                 {
@@ -55,16 +57,16 @@ namespace DotNetCore2.Controllers.Auth
         /// 
         /// </summary>
         /// <param name="parameters"></param>
-        private async Task<Authentication> Authorize(UserDetails userDetails)
+        private AuthenticationDto Authorize(UserLoginDto user)
         {
-            var identUser = _userQuery.Execute().FirstOrDefault(u => u.Username == userDetails.Username);
+            var identUser = _userQuery.Execute().FirstOrDefault(u => u.Username == user.Username);
 
             if (identUser == null)
             {
                 throw new ArgumentException("Invalid parameters");
             }
 
-            var isValidated = CryptoHelperWrapper.VerifyPassword(identUser.Password, userDetails.Password);
+            var isValidated = CryptoHelperWrapper.VerifyPassword(identUser.Password, user.Password);
 
             if (!isValidated)
             {
@@ -73,9 +75,9 @@ namespace DotNetCore2.Controllers.Auth
 
             var token = GetToken(identUser.Id.ToString());
 
-            var authentication = new Authentication()
+            var authentication = new AuthenticationDto()
             {
-                Username = userDetails.Username,
+                Username = user.Username,
                 Token = token.value,
                 Expires = token.expiry
             };

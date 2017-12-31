@@ -4,7 +4,7 @@ using DotNetCore2.EF.Commands;
 using DotNetCore2.EF.Commands.Contracts;
 using DotNetCore2.EF.Queries;
 using DotNetCore2.EF.Queries.Contracts;
-using DotNetCore2.Model.Domain;
+using DotNetCore2.Model.Domain.Utils;
 using DotNetCore2.Services;
 using DotNetCore2.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;

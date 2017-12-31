@@ -1,4 +1,4 @@
-﻿namespace DotNetCore2.Model.Domain
+﻿namespace DotNetCore2.Model.Domain.Utils
 {
     public class AppEnvironment
     {

@@ -7,7 +7,12 @@ class httpWrapper {
         return new Promise((resolve, reject) => {
             restClient[requestType](url, data)
                 .then((response) => {
-                   resolve(response.data.value.result);
+                    //hacky way to handle async and sync returns
+                    if (response.data.value !== undefined) {
+                        resolve(response.data.value.result);
+                    } else {
+                        resolve(response.data);
+                    }
                 })
                 .catch(({ response }) => {
                     if (response) {

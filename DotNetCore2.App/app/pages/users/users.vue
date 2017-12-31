@@ -6,6 +6,9 @@
             </div>
 
             <div class="panel-body">
+                <ul>
+                    <li v-for="user in users">{{user.email}}</li>
+                </ul>
             </div>
         </div>
     </div>

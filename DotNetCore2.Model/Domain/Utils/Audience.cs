@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DotNetCore2.Model.Domain
+﻿namespace DotNetCore2.Model.Domain.Utils
 {
     public class Audience
     {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DotNetCore2.Model.Domain
+﻿namespace DotNetCore2.Model.Domain.Auth
 {
-    public class Authentication
+    public class AuthenticationDto
     {
         public string Username { get; set; }
         public string Token { get; set; }

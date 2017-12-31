@@ -1,6 +1,6 @@
 ﻿using CryptoHelper;
 
-namespace DotNetCore2.Services.Helpers
+namespace DotNetCore2.Services.Utils
 {
     public static class CryptoHelperWrapper
     {

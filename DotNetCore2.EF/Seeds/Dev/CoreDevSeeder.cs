@@ -1,5 +1,5 @@
 ﻿using DotNetCore2.Model.Entities;
-using DotNetCore2.Services.Helpers;
+using DotNetCore2.Services.Utils;
 using System;
 using System.Collections.Generic;
 
