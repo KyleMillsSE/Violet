@@ -5,7 +5,12 @@ import * as types from './mutator-types'
 
 export default {
 
-    [types.AUTH.SET](state, obj) {
+    [types.AUTH.LOGIN](state, obj) {
+        state.auth.username = obj.username;
+        state.auth.token = obj.token;
+    },
+
+    [types.AUTH.LOGOUT](state, obj) {
         state.auth.username = obj.username;
         state.auth.token = obj.token;
     }

@@ -1,4 +1,5 @@
 ﻿using DotNetCore2.App.Middleware;
+using DotNetCore2.App.SignalR;
 using DotNetCore2.EF;
 using DotNetCore2.EF.Commands;
 using DotNetCore2.EF.Commands.Contracts;
@@ -41,6 +42,7 @@ namespace DotNetCore2
             services.AddScoped<CurrentApplicationUserService>(); //might be wrong?? might have to be singleton?
 
             services.AddMvc();
+            services.AddSignalR();
 
             //Configure scoped services does not work!! yet 
             //services.ConfigureCommandServices();
@@ -70,6 +72,11 @@ namespace DotNetCore2
             app.UseDiscoverCurrentUserMiddleware();
             
             app.UseStaticFiles();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<CoreHub>("coreHub");
+            });
 
             app.UseMvc(routes =>
             {

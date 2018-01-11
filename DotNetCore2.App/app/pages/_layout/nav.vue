@@ -22,7 +22,7 @@
         name: 'nav',
         methods: {
             signOut() {
-                this.$store.dispatch('setAuth', { username: null, token: null });
+                this.$store.dispatch('logout', { username: null, token: null });
                 this.$router.push({
                     name: 'login'
                 });

@@ -2,7 +2,7 @@
 import store from '../../store/store'
 
 const restClient = new axios.create({
-    baseURL: 'http://localhost:52694/api/',
+    baseURL: 'http://localhost:55799/api/',
    // timeout: 5000,
     headers: {
         'Content-Type': 'application/json'

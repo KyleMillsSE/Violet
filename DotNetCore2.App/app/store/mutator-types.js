@@ -1,3 +1,4 @@
 ﻿export const AUTH = {
-    SET: 'SET'
+    LOGIN: 'LOGIN',
+    LOGOUT: 'LOGOUT'
 };

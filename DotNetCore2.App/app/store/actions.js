@@ -3,7 +3,11 @@ import * as types from './mutator-types'
 
 export default {
 
-    setAuth({ commit }, obj) {
-        commit(types.AUTH.SET, obj)
-    }
+    login({ commit }, obj) {
+        commit(types.AUTH.LOGIN, obj)
+    },
+
+    logout({ commit }, obj) {
+        commit(types.AUTH.LOGOUT, obj)
+    },
 }

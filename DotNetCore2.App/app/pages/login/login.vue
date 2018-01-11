@@ -40,7 +40,7 @@
         methods: {
             submit() {
                 http.get('token?username=' + this.username + '&password=' + this.password + '&grantType=password').then(result => {
-                    this.$store.dispatch('setAuth', { username: result.username, token: result.token });
+                    this.$store.dispatch('login', { username: result.username, token: result.token });
                     this.$router.push({
                         name: 'dashboard'
                     });

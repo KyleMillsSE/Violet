@@ -7,12 +7,11 @@ import Toasted from 'vue-toasted';
 
 
 Vue.config.productionTip = false //removes console output
-Vue.config.devtools = false //Might cause problems?? hopefully just removes console output
+Vue.config.devtools = false //Might cause problems??
 
 /**
 * vue-toasted plugin + options
 */
-
 Vue.use(Toasted, {
     duration: 2500,
     position: 'bottom-right',
@@ -24,11 +23,11 @@ Vue.use(Toasted, {
 */ 
 sync(store, router) 
 
-
+//MATERIALIZE INSTEAD OF BOOTSTRAP
 const appVue = new Vue({
     el: '#app',
-    router: router, 
     store: store,
+    router: router, 
     render: r => r(app)
 })
 
