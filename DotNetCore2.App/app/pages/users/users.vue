@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import http from '../../core/restClient/httpWrapper'
+    import restClient from '../../core/restClient/restClient'
     import notification from '../../core/notification/notification'
 
     export default {
@@ -27,8 +27,8 @@
         },
         methods: {
             loadData() {
-                http.get('users').then(result => {
-                    this.users = result;
+                restClient.get('users').then(success => {
+                    this.users = success;
                 }).catch(err => {
                     notification.error(this, "Error occurred retreiving users");
                 });

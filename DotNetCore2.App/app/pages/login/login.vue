@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import http from '../../core/restClient/httpWrapper'
+    import restClient from '../../core/restClient/restClient'
     import notification from '../../core/notification/notification'
 
     export default {
@@ -39,7 +39,7 @@
         },
         methods: {
             submit() {
-                http.get('token?username=' + this.username + '&password=' + this.password + '&grantType=password').then(result => {
+                restClient.get('token?username=' + this.username + '&password=' + this.password + '&grantType=password').then(result => {
                     this.$store.dispatch('login', { username: result.username, token: result.token });
                     this.$router.push({
                         name: 'dashboard'

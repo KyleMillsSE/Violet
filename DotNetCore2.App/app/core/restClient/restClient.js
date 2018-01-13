@@ -1,15 +1,15 @@
 ﻿import axios from 'axios'
 import store from '../../store/store'
+import router from '../../router/router'
 
-const restClient = new axios.create({
+const axiosWrapper = new axios.create({
     baseURL: 'http://localhost:55799/api/',
-   // timeout: 5000,
     headers: {
         'Content-Type': 'application/json'
     }
 })
 
-restClient.interceptors.request.use(function (config) {
+axiosWrapper.interceptors.request.use(function (config) {
     // append auth token to header if exists
     if (!config.headers.Authorization) {
         config.headers.Authorization = 'Bearer ' + store.getters.getToken;
@@ -21,23 +21,61 @@ restClient.interceptors.request.use(function (config) {
 });
 
 // Add a response interceptor
-restClient.interceptors.response.use(undefined, function (err) {
-    if (err.response.status === 401) {
-        
-        //return getRefreshToken()
-        //    .then(function (success) {
-        //        setTokens(success.access_token, success.refresh_token);
-        //        err.config.__isRetryRequest = true;
-        //        err.config.headers.Authorization = 'Bearer ' + getAccessToken();
-        //        return axios(err.config);
-        //    })
-        //    .catch(function (error) {
-        //        console.log('Refresh login error: ', error);
-        //        throw error;
-        //    });
-    }
+axiosWrapper.interceptors.response.use(undefined, function (err) {
+    if (err.response.status === 401) { //handle refresh of token if it expires err.config && err.response && 
+        return axiosWrapper.post("/token?expiredToken=" + store.getters.getToken).then(
+            success => {
+                store.dispatch('refreshToken', { token: success.data.token });
 
-    throw err;
+                err.config.headers.Authorization = 'Bearer ' + store.getters.getToken;
+
+                return axios.request(err.config);
+            },
+            err => {
+                store.dispatch('logout');
+
+                router.push({
+                    name: 'login'
+                });
+
+                return Promise.reject(err);
+            });
+    }
+    else {
+        return Promise.reject(err);
+    }
 });
 
-export default restClient 
+class RestClient {
+    constructor() { }
+
+    submit(requestType, url, data) {
+        return new Promise((resolve, reject) => {
+            axiosWrapper[requestType](url, data)
+                .then((response) => {
+                    //hacky way to handle async and sync returns
+                    if (response.data.value !== undefined) {
+                        resolve(response.data.value.result);
+                    } else {
+                        resolve(response.data);
+                    }
+                })
+                .catch(({ response }) => {
+                    if (response) {
+                        reject(response.data);
+                    } else {
+                        reject();
+                    }
+                });
+        });
+    }
+}
+
+const restClient = new RestClient()
+    
+export default {
+
+    get(endpoint, data = null) {
+        return restClient.submit('get', endpoint, data);
+    }
+}

@@ -14,12 +14,17 @@ const localStoragePlugin = store => {
     store.subscribe((mutation, state) => {
 
         if (mutation.type === types.AUTH.LOGIN) {
-            localStorage.setItem('username', JSON.stringify(state.auth.username))
-            localStorage.setItem('token', JSON.stringify(state.auth.token))
+            localStorage.setItem('username', state.auth.username)
+            localStorage.setItem('token', state.auth.token)
         }
 
         if (mutation.type === types.AUTH.LOGOUT) {
+            localStorage.removeItem('username')
             localStorage.removeItem('token')
+        }
+
+        if (mutation.type === types.AUTH.TOKEN) {
+            localStorage.setItem('token', state.auth.token)
         }
     })
 }

@@ -23,7 +23,7 @@
                     { icon: 'fa fa-home', name: 'Dashboard', state: 'dashboard', isActive: false },
                     { icon: 'fa fa-users', name: 'Users', state: 'users', isActive: false },
                 ],
-                currentSelected: 0
+                currentSelected: 0 //vuex this
             }
         },
         methods: {
@@ -38,6 +38,7 @@
                 });
 
                 this.currentSelected = index;
+                localStorage.setItem("currentSelectedSideNav", this.currentSelected);
             }
         },
         created() {

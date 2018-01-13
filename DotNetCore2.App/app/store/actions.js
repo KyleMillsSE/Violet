@@ -8,6 +8,14 @@ export default {
     },
 
     logout({ commit }, obj) {
-        commit(types.AUTH.LOGOUT, obj)
+        commit(types.AUTH.LOGOUT, { username: null, token: null })
+    },
+
+    refreshToken({ commit }, obj) {
+        commit(types.AUTH.TOKEN, obj)
+    },
+
+    updateNav({ commit }, obj) {
+
     },
 }
