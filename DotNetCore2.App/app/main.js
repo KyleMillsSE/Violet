@@ -3,8 +3,14 @@ import { sync } from 'vuex-router-sync'
 import app from './app.vue'
 import router from './router/router'
 import store from './store/store'
-import Toasted from 'vue-toasted';
+import vueToasted from 'vue-toasted';
 
+var signalR = require('./scripts/signalr-client-1.0.0-alpha2-final.min.js');
+
+/**
+* expose signalR
+*/
+Vue.prototype.$signalR = signalR;
 
 Vue.config.productionTip = false //removes console output
 Vue.config.devtools = false //Might cause problems??
@@ -12,18 +18,17 @@ Vue.config.devtools = false //Might cause problems??
 /**
 * vue-toasted plugin + options
 */
-Vue.use(Toasted, {
+Vue.use(vueToasted, {
     duration: 2500,
     position: 'bottom-right',
     iconPack: 'fontawesome'
 })
 
 /**
-* Effortlessly keep vue- router and vuex store in sync.
+* effortlessly keep vue- router and vuex store in sync.
 */ 
 sync(store, router) 
 
-//MATERIALIZE INSTEAD OF BOOTSTRAP
 const appVue = new Vue({
     el: '#app',
     store: store,
@@ -33,3 +38,8 @@ const appVue = new Vue({
 
 
 export { appVue }
+
+
+/** Tasks todo:
+* Materialize instead of bootstrap
+*/

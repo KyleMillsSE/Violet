@@ -76,7 +76,7 @@ namespace DotNetCore2.Controllers.Auth
             if (user == null)
                 throw new ArgumentException("Invalid parameters");
 
-            var isValidated = CryptoHelperWrapper.VerifyPassword(user.Password, user.Password);
+            var isValidated = CryptoHelperWrapper.VerifyPassword(user.Password, userLogin.Password);
             if (!isValidated)
                 throw new ArgumentException("Invalid parameters");
 
