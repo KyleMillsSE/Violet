@@ -7,6 +7,6 @@ namespace DotNetCore2.App.SignalR
 {
     public interface ICoreHub
     {
-        void UserUpdated();
+        //signalR methods to call on client hubs
     }
 }

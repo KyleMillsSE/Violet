@@ -10,6 +10,7 @@ using DotNetCore2.Services;
 using DotNetCore2.WebApi.Configurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,15 +36,19 @@ namespace DotNetCore2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CoreConnection")));
-
+            //commands
             services.AddScoped(typeof(ICoreEntityInsertCommand<>), typeof(CoreEntityInsertCommand<>));
+            //queries
             services.AddScoped(typeof(ICoreGetByIdQuery<>), typeof(CoreGetByIdQuery<>));
             services.AddScoped(typeof(ICoreGetAllQuery<>), typeof(CoreGetAllQuery<>));
+            //user service
             services.AddScoped<CurrentApplicationUserService>(); //might be wrong?? might have to be singleton?
-
-            services.AddMvc();
+            //signalR
+            services.AddSingleton<CoreHub>(); //unsure if needed to be singleton
             services.AddSignalR();
 
+            services.AddMvc();
+         
             //Configure scoped services does not work!! yet 
             //services.ConfigureCommandServices();
 
@@ -66,17 +71,18 @@ namespace DotNetCore2
             {
                 app.UseExceptionHandler("/Error");
             }
-            //enable jwt
-            app.UseAuthentication();
-            // custom middlware
-            app.UseDiscoverCurrentUserMiddleware();
-            
-            app.UseStaticFiles();
 
             app.UseSignalR(routes =>
             {
                 routes.MapHub<CoreHub>("coreHub");
             });
+
+            //enable jwt
+            app.UseAuthentication();
+            // custom middlware
+            app.UseDiscoverCurrentUserMiddleware();
+
+            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {

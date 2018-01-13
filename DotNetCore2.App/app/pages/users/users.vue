@@ -22,6 +22,7 @@
         name: 'users',
         data() {
             return {
+                subscription: null,
                 users: [],
             }
         },
@@ -34,7 +35,8 @@
                 });
             }
         },
-        created() {
+        created() {},
+        mounted() {
             this.loadData();
         }
     }

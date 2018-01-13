@@ -42,4 +42,5 @@ export { appVue }
 
 /** Tasks todo:
 * Materialize instead of bootstrap
+* Abstract away the signalR creating connections etc from vues
 */
