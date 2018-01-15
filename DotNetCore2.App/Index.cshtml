@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Options;
+@using DotNetCore2.Model.Domain.Utils;
+
+@inject IOptions<AppEnvironment> AppEnvironmentSettings
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -6,9 +11,13 @@
 </head>
 <body class="app-background">
     <div data-autoscroll="false" class="wrapper"></div>
-    <div > @*class="container-fluid"*@
+    <div>
+        @*class="container-fluid"*@
         <div id="app"></div>
     </div>
+    <script>
+        localStorage.setItem("webHost", "@AppEnvironmentSettings.Value.WebHost");
+    </script>
 </body>
 </html>
 

@@ -17,7 +17,7 @@ namespace DotNetCore2.Controllers.Users
     {
         private readonly ICoreGetAllQuery<CoreUser> _userQuery;
 
-        public UsersController(ICoreGetAllQuery<CoreUser> userQuery
+        public UsersController(ICoreGetAllQuery<CoreUser> userQuery)
         {
             _userQuery = userQuery;
         }

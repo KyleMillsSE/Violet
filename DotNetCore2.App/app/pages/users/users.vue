@@ -31,7 +31,7 @@
                 restClient.get('users').then(success => {
                     this.users = success;
                 }).catch(err => {
-                    notification.error(this, "Error occurred retreiving users");
+                    notification.error("Error occurred retreiving users");
                 });
             }
         },

@@ -3,7 +3,7 @@ import store from '../../store/store'
 import router from '../../router/router'
 
 const axiosWrapper = new axios.create({
-    baseURL: 'http://localhost:55799/api/',
+    baseURL: localStorage.getItem("webHost") + '/api/',
     headers: {
         'Content-Type': 'application/json'
     }

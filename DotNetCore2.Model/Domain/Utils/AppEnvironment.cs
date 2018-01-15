@@ -3,5 +3,6 @@
     public class AppEnvironment
     {
         public string Seeding { get; set; }
+        public string WebHost { get; set; }
     }
 }

@@ -26,7 +26,7 @@
                 this.$router.push({
                     name: 'login'
                 });
-                notification.success(this, "Successfully logged out");
+                notification.success("Successfully logged out");
             }
         }
     }

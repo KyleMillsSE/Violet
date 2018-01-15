@@ -44,9 +44,9 @@
                     this.$router.push({
                         name: 'dashboard'
                     });
-                    notification.success(this, "Successfully logged in");
+                    notification.success("Successfully logged in");
                 }).catch(err => {
-                    notification.error(this, "Invalid username or password");
+                    notification.error("Invalid username or password");
                 });
             }
         }

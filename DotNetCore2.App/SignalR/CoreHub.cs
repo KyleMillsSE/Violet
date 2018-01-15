@@ -16,9 +16,5 @@ namespace DotNetCore2.App.SignalR
             return base.OnDisconnectedAsync(exception);
         }
 
-        public void Send(string name, string message)
-        {
-            Clients.All.UserUpdated();
-        }
     }
 }

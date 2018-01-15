@@ -1,19 +1,21 @@
-﻿export default {
+﻿import Vue from 'vue'
 
-    error(vm, msg) {
-        vm.$toasted.error(msg, { icon: 'exclamation-circle' })
+export default {
+
+    error(msg) {
+        Vue.prototype.$toasted.error(msg, { icon: 'exclamation-circle' })
     },
 
-    info(vm, msg) {
-        vm.$toasted.info(msg, { icon: 'info' })
+    info(msg) {
+        Vue.prototype.$toasted.info(msg, { icon: 'info' })
     },
 
-    success(vm, msg) {
-        vm.$toasted.success(msg, { icon: 'check' })
+    success(msg) {
+        Vue.prototype.$toasted.success(msg, { icon: 'check' })
     },
 
-    warning(vm, msg) {
-        vm.$toasted.show(msg, { icon: 'exclamation', className: 'warning-toast' })
+    warning(msg) {
+        Vue.prototype.$toasted.show(msg, { icon: 'exclamation', className: 'warning-toast' })
     }
 
 };
