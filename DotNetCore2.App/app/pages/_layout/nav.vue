@@ -23,9 +23,11 @@
         methods: {
             signOut() {
                 this.$store.dispatch('logout');
+
                 this.$router.push({
                     name: 'login'
                 });
+
                 notification.success("Successfully logged out");
             }
         }
