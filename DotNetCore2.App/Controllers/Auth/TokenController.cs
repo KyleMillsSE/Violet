@@ -1,8 +1,8 @@
-﻿using DotNetCore2.EF.Queries.Contracts;
+﻿using DotNetCore2.EF.Queries;
 using DotNetCore2.Model.Domain.Auth;
 using DotNetCore2.Model.Domain.User;
 using DotNetCore2.Model.Domain.Utils;
-using DotNetCore2.Model.Entities;
+using DotNetCore2.Model.Entities.Identity;
 using DotNetCore2.Services.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -12,7 +12,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DotNetCore2.Controllers.Auth
 {
@@ -30,7 +29,7 @@ namespace DotNetCore2.Controllers.Auth
             _authSettings = authSettings;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public IActionResult GetToken([FromQuery]UserLoginDto user)
         {
             if (user?.GrantType == "password")
@@ -108,11 +107,11 @@ namespace DotNetCore2.Controllers.Auth
                 audience: _authSettings.Value.Aud,
                 claims: claims,
                 notBefore: now,
-                expires: now.Add(TimeSpan.FromMinutes(1)),
+                expires: now.Add(TimeSpan.FromMinutes(60)),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-            return (encodedJwt, (int)TimeSpan.FromMinutes(1).TotalSeconds);
+            return (encodedJwt, (int)TimeSpan.FromMinutes(60).TotalSeconds);
         }
     }
 }

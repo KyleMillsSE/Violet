@@ -1,14 +1,10 @@
-﻿using DotNetCore2.App.SignalR;
-using DotNetCore2.EF.Queries.Contracts;
+﻿using DotNetCore2.EF.Queries;
 using DotNetCore2.Model;
 using DotNetCore2.Model.Domain.User;
-using DotNetCore2.Model.Entities;
+using DotNetCore2.Model.Entities.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DotNetCore2.Controllers.Users
 {
@@ -24,11 +20,7 @@ namespace DotNetCore2.Controllers.Users
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetAllUsers()
-        {
-            var users = _userQuery.Execute().ToList().Select(x => x.MapTo<UserDto>());
+        public IActionResult GetAllUsers() => Ok(_userQuery.Execute().ToList().Select(x => x.MapTo<UserDto>()));
 
-            return Ok(users);
-        }
     }
 }

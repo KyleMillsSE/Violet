@@ -1,5 +1,4 @@
 ﻿using System;
-using DotNetCore2.EF.Queries.Contracts;
 
 namespace DotNetCore2.EF.Queries
 {

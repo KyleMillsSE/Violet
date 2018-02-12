@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DotNetCore2.EF.Commands.Contracts
+namespace DotNetCore2.EF.Commands
 {
     public interface ICoreEntityInsertCommand<TMdl>
     {

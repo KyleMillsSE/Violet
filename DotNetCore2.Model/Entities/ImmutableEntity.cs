@@ -1,4 +1,5 @@
 ﻿using DotNetCore2.Model.Contracts;
+using DotNetCore2.Model.Entities.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,6 +16,7 @@ namespace DotNetCore2.Model.Entities
         [Required]
         [Timestamp]
         public byte[] Version { get; set; }
+
         [ForeignKey("CreatedById")]
         public virtual CoreUser CreatedBy { get; set; }
     }

@@ -1,4 +1,5 @@
 ﻿using DotNetCore2.Model.Entities;
+using DotNetCore2.Model.Entities.Identity;
 using System;
 
 namespace DotNetCore2.Services
@@ -7,7 +8,7 @@ namespace DotNetCore2.Services
     {
         private static Guid? UserId;
 
-        public Guid GetCurrentUser() => UserId ?? CoreUser.KnownUserIds.CoreAdminUser;
+        public Guid GetCurrentUser() => UserId ?? CoreUser.KnownCoreUserIds.CoreAdminUser;
         public void SetCurrentUser(Guid userId) => UserId = userId;
         public void SetCurrentUser(string userId) => UserId = Guid.Parse(userId);
     }

@@ -11,7 +11,7 @@ using System;
 namespace DotNetCore2.EF.Migrations
 {
     [DbContext(typeof(CoreContext))]
-    [Migration("20171230115456_Init")]
+    [Migration("20180212220003_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,34 +21,50 @@ namespace DotNetCore2.EF.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("DotNetCore2.Model.Entities.CoreClaim", b =>
+            modelBuilder.Entity("DotNetCore2.Model.Entities.Identity.CoreClaim", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("CreatedAt");
-
-                    b.Property<Guid>("CreatedById");
+                    b.Property<Guid>("Id");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(2500)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Reference")
                         .HasColumnType("nvarchar(2500)");
 
-                    b.Property<byte[]>("Version")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate();
-
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
 
                     b.ToTable("Claims");
                 });
 
-            modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUser", b =>
+            modelBuilder.Entity("DotNetCore2.Model.Entities.Identity.CoreSecurityProfile", b =>
+                {
+                    b.Property<Guid>("Id");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.Property<string>("Reference")
+                        .HasColumnType("nvarchar(2500)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SecurityProfiles");
+                });
+
+            modelBuilder.Entity("DotNetCore2.Model.Entities.Identity.CoreSecurityProfileClaim", b =>
+                {
+                    b.Property<Guid>("SecurityProfileId");
+
+                    b.Property<Guid>("ClaimId");
+
+                    b.HasKey("SecurityProfileId", "ClaimId");
+
+                    b.HasIndex("ClaimId");
+
+                    b.ToTable("SecurityProfileClaims");
+                });
+
+            modelBuilder.Entity("DotNetCore2.Model.Entities.Identity.CoreUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -69,6 +85,8 @@ namespace DotNetCore2.EF.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(2500)");
 
+                    b.Property<Guid>("SecurityProfileId");
+
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(2500)");
 
@@ -83,53 +101,39 @@ namespace DotNetCore2.EF.Migrations
 
                     b.HasIndex("ModifiedById");
 
+                    b.HasIndex("SecurityProfileId");
+
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUserClaim", b =>
+            modelBuilder.Entity("DotNetCore2.Model.Entities.Identity.CoreSecurityProfileClaim", b =>
                 {
-                    b.Property<Guid>("UserId");
-
-                    b.Property<Guid>("ClaimId");
-
-                    b.HasKey("UserId", "ClaimId");
-
-                    b.HasIndex("ClaimId");
-
-                    b.ToTable("UserClaims");
-                });
-
-            modelBuilder.Entity("DotNetCore2.Model.Entities.CoreClaim", b =>
-                {
-                    b.HasOne("DotNetCore2.Model.Entities.CoreUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUser", b =>
-                {
-                    b.HasOne("DotNetCore2.Model.Entities.CoreUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("DotNetCore2.Model.Entities.CoreUser", "ModifiedBy")
-                        .WithMany()
-                        .HasForeignKey("ModifiedById")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("DotNetCore2.Model.Entities.CoreUserClaim", b =>
-                {
-                    b.HasOne("DotNetCore2.Model.Entities.CoreClaim", "Claim")
-                        .WithMany("UserClaims")
+                    b.HasOne("DotNetCore2.Model.Entities.Identity.CoreClaim", "Claim")
+                        .WithMany("SecurityProfileClaims")
                         .HasForeignKey("ClaimId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DotNetCore2.Model.Entities.CoreUser", "User")
-                        .WithMany("UserClaims")
-                        .HasForeignKey("UserId")
+                    b.HasOne("DotNetCore2.Model.Entities.Identity.CoreSecurityProfile", "SecurityProfile")
+                        .WithMany("SecurityProfileClaims")
+                        .HasForeignKey("SecurityProfileId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("DotNetCore2.Model.Entities.Identity.CoreUser", b =>
+                {
+                    b.HasOne("DotNetCore2.Model.Entities.Identity.CoreUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DotNetCore2.Model.Entities.Identity.CoreUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DotNetCore2.Model.Entities.Identity.CoreSecurityProfile", "SecurityProfile")
+                        .WithMany("CoreUsers")
+                        .HasForeignKey("SecurityProfileId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618

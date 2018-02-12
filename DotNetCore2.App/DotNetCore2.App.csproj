@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="app\components\" />
     <Folder Include="app\scripts\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

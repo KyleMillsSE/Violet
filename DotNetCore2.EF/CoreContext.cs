@@ -1,6 +1,6 @@
 ﻿using DotNetCore2.Model;
 using DotNetCore2.Model.Contracts;
-using DotNetCore2.Model.Entities;
+using DotNetCore2.Model.Entities.Identity;
 using DotNetCore2.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,7 +20,8 @@ namespace DotNetCore2.EF
 
         public DbSet<CoreUser> Users { get; set; }
         public DbSet<CoreClaim> Claims { get; set; }
-        private DbSet<CoreUserClaim> UserClaims { get; set; }
+        public DbSet<CoreSecurityProfile> SecurityProfiles { get; set; }
+        public DbSet<CoreSecurityProfileClaim> SecurityProfileClaims { get; set; }
 
         /// <summary>
         /// 
@@ -86,17 +87,17 @@ namespace DotNetCore2.EF
             modelBuilder.Entity<CoreUser>().HasOne(x => x.CreatedBy).WithMany().HasForeignKey(x => x.CreatedById);
 
             //Create many to many relantionship between claim and user implementing middle man class to handle the relation
-            modelBuilder.Entity<CoreUserClaim>()
-                .HasKey(x => new { x.UserId, x.ClaimId });
+            modelBuilder.Entity<CoreSecurityProfileClaim>()
+                .HasKey(x => new { x.SecurityProfileId, x.ClaimId });
 
-            modelBuilder.Entity<CoreUserClaim>()
-                .HasOne(x => x.User)
-                .WithMany(x => x.UserClaims)
-                .HasForeignKey(x => x.UserId);
+            modelBuilder.Entity<CoreSecurityProfileClaim>()
+                .HasOne(x => x.SecurityProfile)
+                .WithMany(x => x.SecurityProfileClaims)
+                .HasForeignKey(x => x.SecurityProfileId);
 
-            modelBuilder.Entity<CoreUserClaim>()
+            modelBuilder.Entity<CoreSecurityProfileClaim>()
                 .HasOne(x => x.Claim)
-                .WithMany(x => x.UserClaims)
+                .WithMany(x => x.SecurityProfileClaims)
                 .HasForeignKey(x => x.ClaimId);
 
             base.OnModelCreating(modelBuilder);

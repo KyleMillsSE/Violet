@@ -1,5 +1,4 @@
-﻿using DotNetCore2.EF.Commands.Contracts;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DotNetCore2.EF.Commands

@@ -1,9 +1,6 @@
-﻿using DotNetCore2.EF.Queries.Contracts;
-using DotNetCore2.Model.Contracts;
-using System;
+﻿using DotNetCore2.Model.Contracts;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DotNetCore2.EF.Queries
 {
@@ -17,7 +14,7 @@ namespace DotNetCore2.EF.Queries
             _context = context;
         }
 
-        public IEnumerable<T> Execute(bool includeDeleted = false)
+        public IQueryable<T> Execute(bool includeDeleted = false)
         {
             if (typeof(ISoftEntity).IsAssignableFrom(typeof(T)) && !includeDeleted)
                 return _context.Set<T>().Where(x => !(x as ISoftEntity).IsDeleted);
