@@ -1,4 +1,4 @@
-﻿using DotNetCore2.EF.Queries;
+﻿using DotNetCore2.EF.Queries.Users;
 using DotNetCore2.Model.Domain.Auth;
 using DotNetCore2.Model.Domain.User;
 using DotNetCore2.Model.Domain.Utils;
@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -18,14 +20,13 @@ namespace DotNetCore2.Controllers.Auth
     [Route("api/token")]
     public class TokenController : Controller
     {
-        private readonly ICoreGetAllQuery<CoreUser> _userGetAllQuery;
-        private readonly ICoreGetByIdQuery<CoreUser> _userGetByIdQuery;
         private readonly IOptions<Audience> _authSettings;
+        private readonly IGetUserByIdQuery _userGetByIdQuery;
+        private readonly IGetUserByUsernameQuery _userGetByUsernameQuery;
 
-        public TokenController(ICoreGetAllQuery<CoreUser> userGetAllQuery, ICoreGetByIdQuery<CoreUser> userGetByIdQuery, IOptions<Audience> authSettings)
+        public TokenController(IGetUserByIdQuery userGetByIdQuery, IGetUserByUsernameQuery userGetByUsernameQuery, IOptions<Audience> authSettings)
         {
-            _userGetAllQuery = userGetAllQuery;
-            _userGetByIdQuery = userGetByIdQuery;
+            _userGetByUsernameQuery = userGetByUsernameQuery;
             _authSettings = authSettings;
         }
 
@@ -55,7 +56,7 @@ namespace DotNetCore2.Controllers.Auth
             if (user == null)
                 return BadRequest("Invalid parameters");
 
-            var (refreshedToken, refreshedExpiry) = GetToken(user.Id.ToString());
+            var (refreshedToken, refreshedExpiry) = GetToken(user.Id.ToString(), user.SecurityProfile.SecurityProfileClaims.Select(x => x.Claim));
 
             var auth = new AuthenticationDto()
             {
@@ -71,7 +72,7 @@ namespace DotNetCore2.Controllers.Auth
         /// <param name="parameters"></param>
         private AuthenticationDto Authorize(UserLoginDto userLogin)
         {
-            var user = _userGetAllQuery.Execute().FirstOrDefault(u => u.Username == userLogin.Username);
+            var user = _userGetByUsernameQuery.Execute(userLogin.Username);
             if (user == null)
                 throw new ArgumentException("Invalid parameters");
 
@@ -79,7 +80,7 @@ namespace DotNetCore2.Controllers.Auth
             if (!isValidated)
                 throw new ArgumentException("Invalid parameters");
 
-            var (token, expiry) = GetToken(user.Id.ToString());
+            var (token, expiry) = GetToken(user.Id.ToString(), user.SecurityProfile.SecurityProfileClaims.Select(x => x.Claim));
 
             return new AuthenticationDto()
             {
@@ -89,14 +90,9 @@ namespace DotNetCore2.Controllers.Auth
             };
         }
 
-        private (string value, int expiry) GetToken(string userId)
+        private (string value, int expiry) GetToken(string userId, IEnumerable<CoreClaim> claims)
         {
             var now = DateTime.UtcNow;
-
-            var claims = new Claim[]
-            {
-                new Claim("UniqueUserIndentifier", userId)
-            };
 
             var symmetricKeyAsBase64 = _authSettings.Value.Secret;
             var keyByteArray = Encoding.ASCII.GetBytes(symmetricKeyAsBase64);
@@ -105,7 +101,7 @@ namespace DotNetCore2.Controllers.Auth
             var jwt = new JwtSecurityToken(
                 issuer: _authSettings.Value.Iss,
                 audience: _authSettings.Value.Aud,
-                claims: claims,
+                claims: claims.Select(x => new Claim(x.Id.ToString(), x.Reference)).Append(new Claim("UniqueUserIndentifier", userId)),
                 notBefore: now,
                 expires: now.Add(TimeSpan.FromMinutes(60)),
                 signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256));

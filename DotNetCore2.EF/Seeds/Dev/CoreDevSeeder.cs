@@ -18,10 +18,10 @@ namespace DotNetCore2.EF.Seeds.Dev
             // claims
             context.Claims.AddRange(new List<CoreClaim>()
             {
-                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.ViewUser, Reference = "View Users", Description = "Ability to view all user records"},
-                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.EditUser, Reference = "Edit User", Description = "Ability to edit and update user records"},
-                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.DeleteUser, Reference = "Delete Users", Description = "Ability to delete user records"},
-                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.AddUser, Reference = "Add Users", Description = "Ability to add new user records"},
+                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.ViewUser, Reference = "ViewUsers", Description = "Ability to view all user records"},
+                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.EditUser, Reference = "EditUser", Description = "Ability to edit and update user records"},
+                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.DeleteUser, Reference = "DeleteUsers", Description = "Ability to delete user records"},
+                new CoreClaim() { Id = CoreClaim.KnownCoreClaimIds.AddUser, Reference = "AddUsers", Description = "Ability to add new user records"},
             });
             context.SaveChanges();
 
@@ -36,9 +36,7 @@ namespace DotNetCore2.EF.Seeds.Dev
 
             // admin security profile
             context.SecurityProfiles
-                .Where(sp => sp.Id == CoreSecurityProfile.KnownCoreSecurityProfileIds.SuperAdminSecurityProfile)
-                .ToList()
-                .Select(sp => sp.SecurityProfileClaims = context.Claims.Select(c => new CoreSecurityProfileClaim() { ClaimId = c.Id, SecurityProfileId = sp.Id }).ToList());
+                .Find(CoreSecurityProfile.KnownCoreSecurityProfileIds.SuperAdminSecurityProfile).SecurityProfileClaims = context.Claims.Select(c => new CoreSecurityProfileClaim() { ClaimId = c.Id, SecurityProfileId = CoreSecurityProfile.KnownCoreSecurityProfileIds.SuperAdminSecurityProfile }).ToList();
             context.SaveChanges();
 
             context.Users.AddRange(new List<CoreUser>() {

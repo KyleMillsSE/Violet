@@ -3,6 +3,7 @@ using DotNetCore2.App.SignalR;
 using DotNetCore2.EF;
 using DotNetCore2.EF.Commands;
 using DotNetCore2.EF.Queries;
+using DotNetCore2.EF.Queries.Users;
 using DotNetCore2.Model.Domain.Utils;
 using DotNetCore2.Services;
 using DotNetCore2.WebApi.Configurations;
@@ -34,21 +35,29 @@ namespace DotNetCore2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CoreContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CoreConnection")));
+
+            //Configure scoped services does not work!! yet 
+            //services.ConfigureCommandServices();
+
             //commands
             services.AddScoped(typeof(ICoreEntityInsertCommand<>), typeof(CoreEntityInsertCommand<>));
+
             //queries
             services.AddScoped(typeof(ICoreGetByIdQuery<>), typeof(CoreGetByIdQuery<>));
             services.AddScoped(typeof(ICoreGetAllQuery<>), typeof(CoreGetAllQuery<>));
+            services.AddScoped(typeof(IGetUserByIdQuery), typeof(GetUserByIdQuery));
+            services.AddScoped(typeof(IGetUserByUsernameQuery), typeof(GetUserByUsernameQuery));
+
             //user service
             services.AddScoped<CurrentApplicationUserService>(); //might be wrong?? might have to be singleton?
+
             //signalR
             services.AddSingleton<CoreHub>(); //unsure if needed to be singleton
             services.AddSignalR();
 
             services.AddMvc();
          
-            //Configure scoped services does not work!! yet 
-            //services.ConfigureCommandServices();
+
 
             //configure the jwt   
             services.ConfigureJwtAuthService(Configuration);

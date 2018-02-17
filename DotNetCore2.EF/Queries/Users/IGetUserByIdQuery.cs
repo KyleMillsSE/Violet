@@ -3,7 +3,7 @@ using System;
 
 namespace DotNetCore2.EF.Queries.Users
 {
-    public interface IGetUserById
+    public interface IGetUserByIdQuery
     {
         CoreUser Execute(Guid userId);
     }
