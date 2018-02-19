@@ -55,9 +55,9 @@ namespace DotNetCore2
             services.AddSingleton<CoreHub>(); //unsure if needed to be singleton
             services.AddSignalR();
 
-            services.AddMvc();
-         
-
+            services.AddMvc().AddJsonOptions(
+                options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
 
             //configure the jwt   
             services.ConfigureJwtAuthService(Configuration);
@@ -86,6 +86,7 @@ namespace DotNetCore2
 
             //enable jwt
             app.UseAuthentication();
+
             // custom middlware
             app.UseDiscoverCurrentUserMiddleware();
 
